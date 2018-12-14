@@ -1,4 +1,26 @@
+#TODO
+- Unit testing
+- Authentication 
+- Containers vs Components
+- Put API key in Redux store
+
+#Chat-Client
+A focused chat client to reduce distraction surrounding conversations. Conversations are based on topics. A conversation may have two or many participants, and all will have access to the entirety of the conversation.
+
+## Features
+- Group topic. Content persists.
+- "Off Topic." Normal chat functionality.  
+- Ability to save/ download content. 
+- Ability to delete a topic.
+- Ability to add participants. 
+
+## Libraries/ APIs
+- [SendBird Platform API](https://docs.sendbird.com/platform)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
+# CREATE-REACT-APP BOILERPLATE
 
 ## Available Scripts
 
