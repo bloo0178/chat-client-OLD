@@ -20,6 +20,8 @@ class CreateMessage extends React.Component {
             if (error) return console.log(error);
             console.log(message.message);
         })
+        // Access the getMessage() state in the parent Chat component 
+        // to add to the messages array for display.
         this.props.getMessage(this.state.message);
         this.setState({
             message: ''

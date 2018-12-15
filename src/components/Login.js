@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setUserID, setSBSess } from '../actions';
+import { setUserID } from '../actions';
+import { Button, Input } from 'reactstrap';
 
 class Login extends React.Component {
     constructor(props) {
@@ -8,13 +9,6 @@ class Login extends React.Component {
         this.state = {
             username: ''
         }
-    }
-
-    // Initialize the SDK. "new SendBird()" should be called once across the app.
-    // https://docs.sendbird.com/javascript 
-    // Might want to move this to App.js
-    componentDidMount() {
-        this.props.dispatch(setSBSess(process.env.REACT_APP_SB_APP_ID));
     }
 
     handleChange = (event) => {
@@ -26,21 +20,21 @@ class Login extends React.Component {
             return;
         }
         this.props.dispatch(setUserID(this.state.username));
-        console.log('sb');
-        console.log(this.props.sb);
         this.props.sb.connect(this.state.username, function (user, error) {
             if (error) { return error }
-            console.log('user');
-            console.log(user);
         })
         this.setState({ username: '' })
     }
 
     render() {
         return (
-            <div>
-                <input value={this.state.username} onChange={this.handleChange} />
-                <button type="submit" onClick={this.handleClick}>Submit</button>
+            <div className="Login">
+                <Input
+                    size="sm"
+                    placeholder="Enter a username"
+                    value={this.state.username} 
+                    onChange={this.handleChange} />
+                <Button size="sm" type="submit" onClick={this.handleClick}>Submit</Button>
             </div >
         )
     }
@@ -52,6 +46,5 @@ const mapStateToProps = state => {
         sb: state.sbsession.sbsession
     }
 }
-
 
 export default connect(mapStateToProps)(Login);

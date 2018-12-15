@@ -19,15 +19,13 @@ class Chat extends React.Component {
 
     // Join the channel. Currently set to a static URL. 
     // Instead of using componentDidMount, may need to wrap this in an HOC
+    // https://www.valentinog.com/blog/how-async-await-in-react/
     componentDidMount() {
+
         this.props.sb.OpenChannel.getChannel(this.state.channel_url, (channel, error) => {
-            if (error) {
-                console.log('error opening channel');
-                return;
-            } channel.enter((response, error) => {
-                if (error) {
-                    return console.log('error entering channel: ' + error);
-                }
+            if (error) return console.log('error opening channel');
+            channel.enter((response, error) => {
+                if (error) return console.log('error entering channel: ' + error);
                 console.log('channel entered');
                 // Set state to the channel object to use channel methods
                 this.setState({
@@ -60,7 +58,7 @@ class Chat extends React.Component {
                 participants: [...this.state.participants, user.userId]
             })
         }
-        
+
         ChannelHandler.onMessageReceived = (channel, message) => {
             this.setState({
                 messages: [...this.state.messages,
@@ -68,6 +66,7 @@ class Chat extends React.Component {
                  ${message.message}`]
             })
         }
+        // !! Need to change the UNIQUE_ID for the addChannelHandler
         this.props.sb.addChannelHandler('UNIQUEID12345', ChannelHandler);
     }
 
@@ -76,8 +75,8 @@ class Chat extends React.Component {
     // messages from devices other than the one that is sending the message.
     getMessage = (message) => {
         this.setState({
-            messages: [...this.state.messages, 
-                `You: 
+            messages: [...this.state.messages,
+            `You: 
                 ${message}`]
         })
     }
@@ -86,8 +85,8 @@ class Chat extends React.Component {
         return (
             <div>
                 <Participants participants={this.state.participants} />
-                <CreateMessage channel={this.state.channel} getMessage={this.getMessage} />
                 <DisplayMessages messages={this.state.messages} />
+                <CreateMessage channel={this.state.channel} getMessage={this.getMessage} />
             </div>
         )
     }
@@ -96,7 +95,7 @@ class Chat extends React.Component {
 // Defined in the Reducer
 const mapStateToProps = state => {
     return {
-        sb: state.sbsession.sbsession, 
+        sb: state.sbsession.sbsession,
         userid: state.userinfo.userid
     }
 }
