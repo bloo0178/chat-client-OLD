@@ -22,20 +22,19 @@ class App extends Component {
   // ACTUALLY FINISH BEFORE RESOLVING THE PROMISE.
   initSession = (APP_ID) => {
     return new Promise(resolve => {
+      // Could do the var sb = new SendBird({ appId: APP_ID }) here. Change dispatch function.
       resolve(this.props.dispatch(setSBSess(APP_ID)));
     })
   }
 
+  // !!! This works now - use similar logic for all other async functions // 
   connectUser = (userid) => {
     return new Promise(resolve => {
-      resolve(this.props.sb.connect('test'));
-      //resolve(cb(userid));
-    })
-  }
-
-  resolveLoading = () => {
-    return new Promise(resolve => {
-      resolve(this.setState({ loading: 'false' }));
+      //resolve(this.props.sb.connect('test'));
+      this.props.sb.connect(userid, (user, error) => {
+        if (error) console.log(error);
+        resolve(user);
+      })
     })
   }
   // --------------- END ASYNC FUNCTIONS -------------------------
@@ -44,15 +43,15 @@ class App extends Component {
   // Initialize the SDK. "new SendBird()" should be called once across the app.
   async componentDidMount() {
     // -------- TEMP FOR STYLING - DELETE ----------------
-    // Add <Login> component back in when ready. And remove
-    // lines below.
-    this.props.dispatch(setUserID('test'));
-    await this.initSession(process.env.REACT_APP_SB_APP_ID);
-    await this.connectUser('test', this.props.sb.connect());
-    await this.resolveLoading();
-    /*this.initSession(process.env.REACT_APP_SB_APP_ID)
-      .then(x => this.connectUser('test', this.props.sb.connect()))
-      .then(x => this.setState({ loading: false }))*/
+    // Add <Login> component back in when ready. And remove lines below.
+    try {
+      this.props.dispatch(setUserID('test'));
+      await this.initSession(process.env.REACT_APP_SB_APP_ID);
+      await this.connectUser('test');
+      this.setState({ loading: 'false' })
+    } catch (err) {
+      console.log(err);
+    }
     // --------- END TEMP ------------------
   }
 
@@ -76,7 +75,6 @@ class App extends Component {
       return (
         <div className="App">
           <Chat />
-          <h1>{this.state.loading}</h1>
         </div>
       )
     }

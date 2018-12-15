@@ -3,6 +3,7 @@
   height: 100vh;
   width: 100%;
   display: flex;
+  border: solid 2px black;
 }
 
 ul {
@@ -22,3 +23,7 @@ ul {
 }
 
 /* ----------- CHAT ----------- */
+
+.Chat-Wrapper {
+  border: solid 2px blue;
+}

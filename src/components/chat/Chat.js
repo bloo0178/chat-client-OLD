@@ -83,7 +83,7 @@ class Chat extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='Chat-Wrapper'>
                 <Participants participants={this.state.participants} />
                 <DisplayMessages messages={this.state.messages} />
                 <CreateMessage channel={this.state.channel} getMessage={this.getMessage} />
