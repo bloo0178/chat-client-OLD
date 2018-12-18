@@ -59,13 +59,20 @@ class Chat extends React.Component {
             })
         }
 
+        ChannelHandler.onUserExited = (openChannel, user) => {
+            var i = this.state.participants.indexOf(user.userId);
+            var userArrCopy = [...this.state.participants];
+            userArrCopy.splice(i, 1);
+            this.setState({ participants: userArrCopy })
+        }
+
         ChannelHandler.onMessageReceived = (channel, message) => {
             this.setState({
                 messages: [...this.state.messages,
-                `${message._sender.userId}:
-                 ${message.message}`]
+                `${message._sender.userId}: ${message.message}`]
             })
         }
+
         // !! Need to change the UNIQUE_ID for the addChannelHandler
         this.props.sb.addChannelHandler('UNIQUEID12345', ChannelHandler);
     }

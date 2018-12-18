@@ -5,6 +5,8 @@ import { setUserID, setSBSess } from './actions';
 import Login from './components/Login';
 import CreateChannel from './components/channel/CreateChannel';
 import Chat from './components/chat/Chat';
+import Navigation from './components/Navbar';
+
 
 
 
@@ -73,8 +75,13 @@ class App extends Component {
     }
     else {
       return (
-        <div className="App">
-          <Chat />
+        <div>
+          <div className="navbar-wrapper" >
+            <Navigation />
+          </div>
+          <div className="content-wrapper">
+            <Chat />
+          </div>
         </div>
       )
     }

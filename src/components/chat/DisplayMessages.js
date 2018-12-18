@@ -10,7 +10,7 @@ const DisplayMessages = (props) => {
     //sb.addChannelHandler("UNIQUEID23456", ChannelHandler);
 
     return (
-        <div>
+        <div className="Messages-Display">
             <ul>
                 {props.messages.map((message, index) => {
                     return <li key={index}>{message}</li>

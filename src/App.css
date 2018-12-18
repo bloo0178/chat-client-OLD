@@ -1,13 +1,11 @@
-.App {
-  text-align: center;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  border: solid 2px black;
-}
+/* ----------- NAVBAR ---------- */
 
-ul {
-  list-style: none;
+.navbar-wrapper {
+  border: solid 2px red;
+  height: 4rem;
+  position: absolute; 
+  top: 0;
+  width: 100%;
 }
 
 /* ----------- LOGIN ----------- */
@@ -22,8 +20,46 @@ ul {
   margin-right: auto;
 }
 
+/* ----------- MAIN ------------ */
+
+.content-wrapper {
+  margin-top: 4rem;
+  height: calc(100vh - 4rem);
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  border: solid 2px black;
+  padding: 1rem;
+}
+
 /* ----------- CHAT ----------- */
 
 .Chat-Wrapper {
   border: solid 2px blue;
+  width: 100%;
 }
+
+.Create-Message {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 10%;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+}
+
+.Messages-Display {
+  /* might use z-index to keep this from spilling over
+  the input */
+  /* might need to add a flexbox to the overall chat wrapper */ 
+  overflow-y: auto;
+  max-height: 50%;
+  border: solid 2px red;
+}
+
+/* ------------ MISC ------------- */
+
+ul {
+  list-style: none;
+}
+

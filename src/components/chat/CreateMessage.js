@@ -1,9 +1,10 @@
 import React from 'react';
+import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 
 class CreateMessage extends React.Component {
     constructor(props) {
         super(props)
-        this.state={
+        this.state = {
             message: ''
         }
     }
@@ -15,7 +16,7 @@ class CreateMessage extends React.Component {
     }
 
     handleClick = () => {
-        let channel = this.props.channel; 
+        let channel = this.props.channel;
         channel.sendUserMessage(this.state.message, (message, error) => {
             if (error) return console.log(error);
             console.log(message.message);
@@ -30,9 +31,20 @@ class CreateMessage extends React.Component {
 
     render() {
         return (
-            <div>
-                <input onChange={this.handleChange} value={this.state.message}></input>
-                <button onClick={this.handleClick}>Send</button>
+            <div className="Create-Message">
+                <InputGroup>
+                    <Input
+                        size="sm"
+                        onChange={this.handleChange}
+                        value={this.state.message}>
+                    </Input>
+                    <InputGroupAddon addonType="append">
+                        <Button
+                            size="sm"
+                            onClick={this.handleClick}>
+                            Send</Button>
+                    </InputGroupAddon>
+                </InputGroup>
             </div>
         )
     }
