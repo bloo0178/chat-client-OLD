@@ -1,11 +1,26 @@
 /* ----------- NAVBAR ---------- */
 
 .navbar-wrapper {
-  border: solid 2px red;
   height: 4rem;
   position: absolute; 
   top: 0;
   width: 100%;
+}
+
+.navlink {
+  text-decoration: none;
+  color: black;
+}
+
+/* ----------- MAIN (MINUS NAVBAR) ------------ */
+
+.content-wrapper {
+  margin-top: 4rem;
+  height: calc(100vh - 4rem);
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 1rem;
 }
 
 /* ----------- LOGIN ----------- */
@@ -20,42 +35,36 @@
   margin-right: auto;
 }
 
-/* ----------- MAIN ------------ */
-
-.content-wrapper {
-  margin-top: 4rem;
-  height: calc(100vh - 4rem);
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  border: solid 2px black;
-  padding: 1rem;
-}
 
 /* ----------- CHAT ----------- */
 
 .Chat-Wrapper {
-  border: solid 2px blue;
   width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+
 }
 
-.Create-Message {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 10%;
-  width: 80%;
-  justify-content: center;
-  align-items: center;
+.participants {
+  width: 100%;
+  align-self: flex-start;
 }
 
 .Messages-Display {
-  /* might use z-index to keep this from spilling over
-  the input */
-  /* might need to add a flexbox to the overall chat wrapper */ 
   overflow-y: auto;
-  max-height: 50%;
-  border: solid 2px red;
+  min-height: 60%;
+  max-height: 60%;
+  width: 100%;
+  align-self: flex-start;
 }
+
+.Create-Message {
+  width: 80%;
+  margin-left: 10%;
+  align-self: flex-end;
+  padding-bottom: 1em;
+}
+
 
 /* ------------ MISC ------------- */
 

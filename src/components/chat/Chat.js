@@ -21,20 +21,18 @@ class Chat extends React.Component {
     // Instead of using componentDidMount, may need to wrap this in an HOC
     // https://www.valentinog.com/blog/how-async-await-in-react/
     componentDidMount() {
-
+        console.log(this.props.sb);
         this.props.sb.OpenChannel.getChannel(this.state.channel_url, (channel, error) => {
-            if (error) return console.log('error opening channel');
+            if (error) return console.log(error);
             channel.enter((response, error) => {
-                if (error) return console.log('error entering channel: ' + error);
+                if (error) return console.log(error);
                 console.log('channel entered');
                 // Set state to the channel object to use channel methods
                 this.setState({
                     channel: channel,
                 })
 
-                // Retrieve a list of participants in an open channel.
-                // Will have to add an event listener. This does not appear to be updated
-                // unless called.
+                // Retrieve current list of participants in an open channel.
                 let participantListQuery = channel.createParticipantListQuery();
                 participantListQuery.next((participantList, error) => {
                     if (error) return console.log(error);
@@ -50,7 +48,7 @@ class Chat extends React.Component {
             })
         })
 
-        //event handler for users joining
+        // ------ EVENT LISTENERS ------
         //https://docs.sendbird.com/javascript/event_handler#3_channel_handler
         var ChannelHandler = new this.props.sb.ChannelHandler();
         ChannelHandler.onUserEntered = (openChannel, user) => {
@@ -62,7 +60,11 @@ class Chat extends React.Component {
         ChannelHandler.onUserExited = (openChannel, user) => {
             var i = this.state.participants.indexOf(user.userId);
             var userArrCopy = [...this.state.participants];
+            console.log('userArrCopy - Before');
+            console.log(userArrCopy);
             userArrCopy.splice(i, 1);
+            console.log('userArrCopy - After');
+            console.log(userArrCopy);
             this.setState({ participants: userArrCopy })
         }
 
@@ -73,7 +75,7 @@ class Chat extends React.Component {
             })
         }
 
-        // !! Need to change the UNIQUE_ID for the addChannelHandler
+        // !! Need to change the UNIQUE_ID for the addChannelHandler. UserID + channelID
         this.props.sb.addChannelHandler('UNIQUEID12345', ChannelHandler);
     }
 

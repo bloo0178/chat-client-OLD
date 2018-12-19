@@ -9,10 +9,10 @@ const Navigation = (props) => {
             <NavbarBrand>react.chat</NavbarBrand>
             <Nav className="ml-auto">
                 <NavItem>
-                    <NavLink href='/'>Groups</NavLink>
+                    <NavLink className="navlink" href='/'>Groups</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href="/">Logout</NavLink>
+                    <NavLink className="navlink" href="/">Logout</NavLink>
                     </NavItem>
             </Nav>
         </Navbar>
