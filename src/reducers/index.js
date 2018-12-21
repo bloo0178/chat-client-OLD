@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import * as SendBird from 'sendbird';
 
+//https://redux.js.org/basics/reducers
+
 const userinfo = (state = '', action) => {
     switch (action.type) {
         case 'SET_USERID':
@@ -23,9 +25,21 @@ const sbsession = (state = '', action) => {
     }
 }
 
+const channel = (state = '', action) => {
+    switch (action.type) {
+        case 'SET_OPEN_CHANNEL':
+            return Object.assign({}, state, {
+                openChannel: action.openChannel
+            })
+        default:
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     userinfo: userinfo,
-    sbsession: sbsession
+    sbsession: sbsession,
+    channel: channel
 })
 
 export default rootReducer;

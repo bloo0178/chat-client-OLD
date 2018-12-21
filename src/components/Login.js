@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setUserID, setSBSess } from '../actions';
 import { Button, Input } from 'reactstrap';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
 class Login extends React.Component {
     constructor(props) {
@@ -23,9 +24,6 @@ class Login extends React.Component {
         try {
             // Initialize session.
             await (() => {
-                // PROBLEM = PROMISE IS CONSIDERED FULFILLED ON 
-                // EXECUTION OF THE FUNCTION... NEED TO VALIDATE THE FUNCTION CALLS
-                // ACTUALLY FINISH BEFORE RESOLVING THE PROMISE.
                 return new Promise(resolve => {
                     this.props.dispatch(setSBSess(process.env.REACT_APP_SB_APP_ID));
                     resolve(this.props.sb);
@@ -42,7 +40,8 @@ class Login extends React.Component {
             })();
             // Set username in Redux store to prompt load of main app.
             this.props.dispatch(setUserID(this.state.username));
-            this.setState({ username: '' });
+            // Redirect to main
+            this.props.history.push("/");
         } catch (err) {
             console.log(err);
         }

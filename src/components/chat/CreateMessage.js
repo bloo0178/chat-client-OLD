@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 
 class CreateMessage extends React.Component {
@@ -17,8 +18,6 @@ class CreateMessage extends React.Component {
 
     handleClick = () => {
         let channel = this.props.channel;
-        console.log('channel');
-        console.log(this.props);
         channel.sendUserMessage(this.state.message, (message, error) => {
             if (error) return console.log(error);
             console.log(message.message);
@@ -52,4 +51,10 @@ class CreateMessage extends React.Component {
     }
 }
 
-export default CreateMessage;
+const mapStateToProps = state => {
+    return {
+        channel: state.channel.openChannel
+    }
+}
+
+export default connect(mapStateToProps)(CreateMessage);

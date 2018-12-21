@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { setUserID, setSBSess } from './actions';
 import Login from './components/Login';
 import CreateChannel from './components/channel/CreateChannel';
+import Channels from './components/channel/ChannelList';
 import Chat from './components/Chat/Chat';
 import Navigation from './components/Navbar';
-
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -23,25 +24,28 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props);
-      if (!this.props.userid) {
-        return (
-          <div className="App">
-            <Login />
-          </div>
-        );
-      }
-
-    else {
+    if (!this.props.userid) {
       return (
-        <div>
-          <div className="navbar-wrapper" >
-            <Navigation />
+        <Router>
+          <div>
+            <Redirect to="/login" />
+            <Route path="/login" component={Login} />
           </div>
-          <div className="content-wrapper">
-            <Chat />
+        </Router>
+      )
+    } else {
+      return (
+        <Router>
+          <div>
+            <div className="navbar-wrapper">
+              <Route component={Navigation} />
+            </div>
+            <div className="content-wrapper">
+              <Route exact path="/" component={Chat} />
+              <Route exact path="/channels" component={Channels} />
+            </div>
           </div>
-        </div>
+        </Router>
       )
     }
   }
@@ -54,6 +58,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps
-)(App);
+export default connect(mapStateToProps)(App);

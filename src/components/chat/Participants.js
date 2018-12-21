@@ -8,7 +8,7 @@ class Participants extends React.Component {
         super(props);
         this.state = {
             collapse: true,
-            icon: 'minus'
+            icon: 'minus', 
         };
     }
 
@@ -38,7 +38,7 @@ class Participants extends React.Component {
         } else {
             return (
                 <div>
-                    <h3>Active</h3>
+                    <h4>Active</h4>
                 </div>
             )
         }
@@ -46,3 +46,20 @@ class Participants extends React.Component {
 }
 
 export default Participants;
+
+
+/*
+Move handlers here.
+Use getMessage to add message when user joins or leaves. (or sendMessage)
+*/
+
+/*console.dir(user.userId);
+// this isn't working
+var i = this.state.participants.indexOf(user.userId);
+var userArrCopy = [...this.state.participants];
+console.log('userArrCopy - Before');
+console.log(userArrCopy);
+userArrCopy.splice(i, 1);
+console.log('userArrCopy - After');
+console.log(userArrCopy);
+this.setState({ participants: userArrCopy })*/
