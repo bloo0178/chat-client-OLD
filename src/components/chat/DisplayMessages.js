@@ -1,7 +1,6 @@
 import React from 'react';
 
 const DisplayMessages = (props) => {
-    console.log(!props.messages[0]);
     if (!props.messages[0]) {
         return null;
     }

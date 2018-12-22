@@ -48,6 +48,8 @@ const messages = (state = [], action) => {
                     message: action.message
                 }
             ]
+        case 'CLEAR_MESSAGES': 
+            return [];
         default:
             return state
     }

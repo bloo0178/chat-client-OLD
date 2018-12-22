@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setOpenChannel, addMessage } from '../../actions'
+import { setOpenChannel, addMessage, clearMessages } from '../../actions'
 import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
@@ -78,6 +78,10 @@ class Chat extends React.Component {
 
     // need to clear out the message object in Redux store
     handleClick = () => {
+        this.props.dispatch(clearMessages());
+        // This isn't exiting the channel because it persists in state. Also, the channel is entered
+        // on componentDidMount(). Will have to dispatch a clearChannel and redirect to the channel
+        // select screen (to-be-created). 
         this.props.channel.exit((response, error) => {
             if (error) return;
         })
