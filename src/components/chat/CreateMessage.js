@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addMessage } from '../../actions';
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 
 class CreateMessage extends React.Component {
@@ -11,23 +12,16 @@ class CreateMessage extends React.Component {
     }
 
     handleChange = (event) => {
-        this.setState({
-            message: event.target.value
-        })
+        this.setState({ message: event.target.value })
     }
 
     handleClick = () => {
-        let channel = this.props.channel;
-        channel.sendUserMessage(this.state.message, (message, error) => {
+        this.props.channel.sendUserMessage(this.state.message, (message, error) => {
             if (error) return console.log(error);
             console.log(message.message);
         })
-        // Access the getMessage() state in the parent Chat component 
-        // to add to the messages array for display.
-        this.props.getMessage(this.state.message);
-        this.setState({
-            message: ''
-        })
+        this.props.dispatch(addMessage(`You: ${this.state.message}`));
+        this.setState({ message: '' });
     }
 
     render() {
@@ -51,10 +45,4 @@ class CreateMessage extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        channel: state.channel.openChannel
-    }
-}
-
-export default connect(mapStateToProps)(CreateMessage);
+export default connect()(CreateMessage);

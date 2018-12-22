@@ -12,3 +12,8 @@ export const setOpenChannel = openChannel => ({
     type: 'SET_OPEN_CHANNEL', 
     openChannel
 })
+
+export const addMessage = message => ({
+    type: 'ADD_MESSAGE',
+    message
+})

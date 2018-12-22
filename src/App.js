@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { setUserID, setSBSess } from './actions';
 import Login from './components/Login';
 import CreateChannel from './components/channel/CreateChannel';
 import Channels from './components/channel/ChannelList';
@@ -53,8 +52,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    userid: state.userinfo.userid,
-    sb: state.sbsession.sbsession
+    userid: state.userinfo.userid
   }
 }
 

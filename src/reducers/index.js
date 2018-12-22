@@ -36,10 +36,28 @@ const channel = (state = '', action) => {
     }
 }
 
+// Messages are kept in Redux store to allow them to persist and
+// re-load despite the user potentially navigating to different screens
+// and unmounting the Chat component.
+const messages = (state = [], action) => {
+    switch (action.type) {
+        case 'ADD_MESSAGE':
+            return [
+                ...state,
+                {
+                    message: action.message
+                }
+            ]
+        default:
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     userinfo: userinfo,
     sbsession: sbsession,
-    channel: channel
+    channel: channel,
+    messages: messages
 })
 
 export default rootReducer;
