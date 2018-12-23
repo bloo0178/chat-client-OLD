@@ -30,7 +30,9 @@ const channel = (state = '', action) => {
         case 'SET_OPEN_CHANNEL':
             return Object.assign({}, state, {
                 openChannel: action.openChannel
-            })
+            });
+        case 'EXIT_OPEN_CHANNEL':
+            return {};
         default:
             return state
     }

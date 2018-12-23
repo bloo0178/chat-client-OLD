@@ -13,6 +13,10 @@ export const setOpenChannel = openChannel => ({
     openChannel
 })
 
+export const exitOpenChannel = () => ({
+    type: 'EXIT_OPEN_CHANNEL'
+})
+
 export const addMessage = message => ({
     type: 'ADD_MESSAGE',
     message

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import Login from './components/Login';
-import CreateChannel from './components/channel/CreateChannel';
-import Channels from './components/channel/ChannelList';
+import Channels from './components/Channels/Channels';
 import Chat from './components/Chat/Chat';
 import Navigation from './components/Navbar';
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
@@ -12,7 +11,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faMinus, faPlus);
-
 
 class App extends Component {
   constructor(props) {
@@ -34,6 +32,8 @@ class App extends Component {
       )
     } else {
       return (
+        // if no channel, then redirect to channels. 
+        // Will have to add a Redirect in the chat component. 
         <Router>
           <div>
             <div className="navbar-wrapper">
