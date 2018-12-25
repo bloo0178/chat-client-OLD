@@ -21,28 +21,38 @@ const Navigation = (props) => {
         props.dispatch(setUserID(''));
     }
 
+    var channelURL;
+    if (!props.channelURL) {
+        channelURL = "/chat";
+    } else {
+        channelURL = `chat/${props.channelURL}`;
+    }
+
     return (
-        <Navbar color="light" light expand="md">
-            <NavbarBrand>react.chat</NavbarBrand>
-            <Nav className="ml-auto">
-                <NavItem>
-                    <NavLink className="navlink" to="/">Chat</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink className="navlink" to='/channels'>Channels</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink className="navlink" to="/login" onClick={logout}>Logout</NavLink>
-                </NavItem>
-            </Nav>
-        </Navbar>
+        <div className="navbar-wrapper">
+            <Navbar color="light" light expand="md">
+                <NavbarBrand>react.chat</NavbarBrand>
+                <Nav className="ml-auto">
+                    <NavItem>
+                        <NavLink className="navlink" to={channelURL}>Chat</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className="navlink" to='/channels'>Channels</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className="navlink" to="/login" onClick={logout}>Logout</NavLink>
+                    </NavItem>
+                </Nav>
+            </Navbar>
+        </div>
     )
 }
 
 const mapStateToProps = state => {
     return {
         sb: state.sbsession.sbsession,
-        channel: state.channel.channel
+        channel: state.channel.channel,
+        channelURL: state.channel.channelURL
     }
 }
 

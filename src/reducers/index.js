@@ -25,16 +25,28 @@ const sbsession = (state = '', action) => {
     }
 }
 
-const channel = (state = '', action) => {
+const initialChannel = {openChannel: '', channelURL: ''}
+
+const channel = (state = initialChannel, action) => {
     switch (action.type) {
         case 'SET_OPEN_CHANNEL':
             return Object.assign({}, state, {
                 openChannel: action.openChannel
             });
         case 'EXIT_OPEN_CHANNEL':
-            return {};
+            return Object.assign({}, state, {
+                openChannel: ''
+            });
+        case 'SET_CHANNEL_URL': 
+            return Object.assign({}, state, {
+                channelURL: action.channelURL
+            });
+        case 'CLEAR_CHANNEL_URL':
+            return Object.assign({}, state, {
+                channelURL: ''
+            });
         default:
-            return state
+            return state;
     }
 }
 

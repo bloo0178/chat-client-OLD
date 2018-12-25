@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setOpenChannel, clearOpenChannel, addMessage, clearMessages, clearChannelURL } from '../../actions'
+import { setOpenChannel, exitOpenChannel, addMessage, clearMessages } from '../../actions'
 import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
-import { Button } from 'reactstrap';
 
 class Chat extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            participants: '',
+            channel_url: "sendbird_open_channel_45725_710596c6503b8bec6795ee467cefbe987c3b5c37",
+            participants: '', 
             loading: true
         }
     }
@@ -28,12 +28,12 @@ class Chat extends React.Component {
         })
     }
 
+    // Join the channel. Currently set to a static URL. 
     async componentDidMount() {
-        let channelURL = this.props.match.params.channelurl; 
         try {
             await (() => {
                 return new Promise(resolve => {
-                    this.props.sb.OpenChannel.getChannel(channelURL, (channel, error) => {
+                    this.props.sb.OpenChannel.getChannel(this.state.channel_url, (channel, error) => {
                         if (error) return console.log(error);
                         channel.enter((response, error) => {
                             if (error) return console.log(error);
@@ -45,6 +45,7 @@ class Chat extends React.Component {
                 })
             })();
             this.setState({ loading: false })
+
             this.updateParticipantList(this.props.channel);
 
             /* ------ EVENT HANDLERS ------
@@ -79,15 +80,21 @@ class Chat extends React.Component {
 
     handleClick = () => {
         this.props.dispatch(clearMessages());
-        this.props.dispatch(clearChannelURL());
+        // The channel is entered on componentDidMount(). 
+        // Will have to dispatch a clearChannel and redirect to the channel
+        // select screen (to-be-created). 
         this.props.channel.exit((response, error) => {
             if (error) return;
         })
-        this.props.dispatch(clearOpenChannel());
+        this.props.dispatch(exitOpenChannel());
         this.props.history.push('/channels');
     }
 
     render() {
+        // Will have to add test here to see if a channel is
+        // assigned. If not, redirect to channel select. 
+        console.log('channel test');
+        console.log(this.props.channel);
         if (this.state.loading === true) {
             return (
                 <div>
@@ -100,22 +107,21 @@ class Chat extends React.Component {
                 <Participants participants={this.state.participants} />
                 <DisplayMessages messages={this.props.messages} />
                 <CreateMessage channel={this.props.channel} />
-                <div>
-                    <p>Channel: {this.props.channel.name}</p>
-                    <Button size="sm" onClick={this.handleClick}>Leave Channel</Button>
-                </div>
+                <p>Channel: {this.props.channel.name}</p>
+                <button onClick={this.handleClick}>Leave Channel</button>
             </div>
         )
     }
+
 }
 
+// Defined in the Reducer
 const mapStateToProps = state => {
     return {
         sb: state.sbsession.sbsession,
         userid: state.userinfo.userid,
         channel: state.channel.openChannel, //currently only accepts openChannels
-        messages: state.messages, 
-        channelURL: state.channel.channelURL
+        messages: state.messages
     }
 }
 

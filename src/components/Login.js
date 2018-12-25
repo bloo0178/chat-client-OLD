@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setUserID, setSBSess } from '../actions';
 import { Button, Input } from 'reactstrap';
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
 class Login extends React.Component {
     constructor(props) {
@@ -41,7 +40,7 @@ class Login extends React.Component {
             // Set username in Redux store to prompt load of main app.
             this.props.dispatch(setUserID(this.state.username));
             // Redirect to main
-            this.props.history.push("/");
+            this.props.history.push("/channels");
         } catch (err) {
             console.log(err);
         }

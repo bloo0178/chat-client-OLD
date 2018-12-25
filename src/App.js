@@ -30,29 +30,28 @@ class App extends Component {
           </div>
         </Router>
       )
-    } else {
-      return (
-        // if no channel, then redirect to channels. 
-        // Will have to add a Redirect in the chat component. 
-        <Router>
-          <div>
-            <div className="navbar-wrapper">
-              <Route component={Navigation} />
-            </div>
-            <div className="content-wrapper">
-              <Route exact path="/" component={Chat} />
-              <Route exact path="/channels" component={Channels} />
-            </div>
-          </div>
-        </Router>
-      )
     }
+    return (
+      // if no channel, then redirect to channels. 
+      // Will have to add a Redirect in the chat component. 
+      <Router>
+        <div>
+          <Route component={Navigation} />
+          <div className="content-wrapper">
+            <Route path='/chat/:channelurl' component={Chat} />
+            <Route exact path="/channels" component={Channels} />
+          </div>
+        </div>
+      </Router>
+    )
+
   }
 }
 
 const mapStateToProps = state => {
   return {
-    userid: state.userinfo.userid
+    userid: state.userinfo.userid,
+    channel: state.channel.openChannel
   }
 }
 
