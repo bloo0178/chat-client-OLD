@@ -1,6 +1,7 @@
 import React from 'react';
 import ChannelList from './ChannelList';
 import CreateChannel from './CreateChannel';
+import DeleteChannel from './DeleteChannel';
 
 
 const Channels = (props) => {
@@ -9,6 +10,7 @@ const Channels = (props) => {
             Channels Main
             <ChannelList />
             <CreateChannel />
+            <DeleteChannel />
         </div>
     )
 }
