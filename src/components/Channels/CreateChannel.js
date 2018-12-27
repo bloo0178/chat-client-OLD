@@ -24,10 +24,12 @@ class CreateChannel extends React.Component {
         if (!this.state.name) {
             return alert('Enter a channel name');
         }
-        this.props.sb.OpenChannel.createChannel(this.state.name, null, null, null, (channel, error) => {
+
+        // Array adds the operatorID's in
+        // need to add the user who created it as an operator
+        this.props.sb.OpenChannel.createChannel(this.state.name, null, null, ['admin', 'test', this.props.userid], (channel, error) => {
             if (error) { return console.log(error); }
             channelURL = channel.url;
-            console.log('channelURL: ' + channelURL);
             this.props.dispatch(clearMessages());
             this.props.dispatch(setChannelURL(channelURL));
             this.setState({
@@ -38,8 +40,6 @@ class CreateChannel extends React.Component {
 
     render() {
         if (this.state.channelCreated) {
-            console.log('expected redirect');
-            console.log(this.props.channelURL);
             return (
                 <Redirect to={{
                     pathname: `/chat/${this.props.channelURL}`
@@ -64,7 +64,8 @@ class CreateChannel extends React.Component {
 const mapStateToProps = state => {
     return {
         sb: state.sbsession.sbsession,
-        channelURL: state.channel.channelURL
+        channelURL: state.channel.channelURL,
+        userid: state.userinfo.userid
     }
 }
 
