@@ -3,7 +3,9 @@ import * as SendBird from 'sendbird';
 
 //https://redux.js.org/basics/reducers
 
-const userinfo = (state = '', action) => {
+const userinfoInitState = { userid: '' }
+
+const userinfo = (state = userinfoInitState, action) => {
     switch (action.type) {
         case 'SET_USERID':
             return Object.assign({}, state, {
@@ -25,9 +27,9 @@ const sbsession = (state = '', action) => {
     }
 }
 
-const initialChannel = {openChannel: '', channelURL: ''}
+const channelInitState = {openChannel: '', channelURL: ''}
 
-const channel = (state = initialChannel, action) => {
+const channel = (state = channelInitState, action) => {
     switch (action.type) {
         case 'SET_OPEN_CHANNEL':
             return Object.assign({}, state, {

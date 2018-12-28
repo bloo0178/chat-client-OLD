@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setOpenChannel, clearOpenChannel, addMessage, clearMessages, clearChannelURL } from '../../actions'
+import { setOpenChannel, addMessage } from '../../actions'
+import ReactLoading from 'react-loading';
 import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
-import { Button } from 'reactstrap';
+import LeaveChat from './LeaveChat';
+import DeleteChat from './DeleteChat';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -15,6 +17,8 @@ class Chat extends React.Component {
         }
     }
 
+    // Consider triggering a key prop for the Participants component within 
+    // the handlers and instead move this logic to the Participant component itself.
     updateParticipantList = (channel) => {
         let participantListQuery = channel.createParticipantListQuery();
         participantListQuery.next((participantList, error) => {
@@ -29,7 +33,7 @@ class Chat extends React.Component {
     }
 
     async componentDidMount() {
-        let channelURL = this.props.match.params.channelurl; 
+        let channelURL = this.props.match.params.channelurl;
         try {
             await (() => {
                 return new Promise(resolve => {
@@ -38,6 +42,7 @@ class Chat extends React.Component {
                         channel.enter((response, error) => {
                             if (error) return console.log(error);
                             // Set state to the channel object to use channel methods
+                            // Possibly refactor. Channel might not need to be in Redux store.
                             this.props.dispatch(setOpenChannel(channel));
                             resolve(this.props.channel);
                         })
@@ -77,33 +82,24 @@ class Chat extends React.Component {
         })
     }
 
-    handleClick = () => {
-        this.props.dispatch(clearMessages());
-        this.props.dispatch(clearChannelURL());
-        this.props.channel.exit((response, error) => {
-            if (error) return;
-        })
-        this.props.dispatch(clearOpenChannel());
-        this.props.history.push('/channels');
-    }
-
     render() {
         if (this.state.loading === true) {
             return (
-                <div>
-                    Loading...
+                <div className='loading'>
+                    <ReactLoading type={"spin"} color={"gray"} />
                 </div>
             )
         }
         return (
             <div className='Chat-Wrapper' >
+                <div>
+                    <p>Channel: {this.props.channel.name}</p>
+                    <LeaveChat history={this.props.history} />
+                    <DeleteChat history={this.props.history} />
+                </div>
                 <Participants participants={this.state.participants} />
                 <DisplayMessages messages={this.props.messages} />
                 <CreateMessage channel={this.props.channel} />
-                <div>
-                    <p>Channel: {this.props.channel.name}</p>
-                    <Button size="sm" onClick={this.handleClick}>Leave Channel</Button>
-                </div>
             </div>
         )
     }
@@ -114,7 +110,7 @@ const mapStateToProps = state => {
         sb: state.sbsession.sbsession,
         userid: state.userinfo.userid,
         channel: state.channel.openChannel, //currently only accepts openChannels
-        messages: state.messages, 
+        messages: state.messages,
         channelURL: state.channel.channelURL
     }
 }

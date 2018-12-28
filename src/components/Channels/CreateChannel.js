@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { clearMessages, setChannelURL } from '../../actions'
-import { Input, Button } from 'reactstrap';
+import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
 
 class CreateChannel extends React.Component {
@@ -48,14 +48,18 @@ class CreateChannel extends React.Component {
         }
         return (
             <div>
-                <h4>Add a Channel</h4>
+                <h4>Create a Channel</h4>
+                <InputGroup>
                 <Input
                     size="sm"
                     placeholder="Enter a channel name"
                     value={this.state.name}
                     onChange={this.handleChange}>
                 </Input>
-                <Button size="sm" onClick={this.handleClick}>Create a Channel</ Button>
+                <InputGroupAddon addonType="append">
+                <Button size="sm" onClick={this.handleClick}>Create</ Button>
+                </InputGroupAddon>
+                </InputGroup>
             </div>
         )
     }

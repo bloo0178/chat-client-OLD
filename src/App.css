@@ -35,7 +35,6 @@
   max-width: 25rem;
   margin-left: auto;
   margin-right: auto;
-  
 }
 
 
@@ -68,8 +67,35 @@
   padding-bottom: 1em;
 }
 
+/* ---------- CHANNELS ----------- */
+
+.channels-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  width: 50%;
+  max-width: 25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.channels-wrapper > div {
+  padding-top: 3rem;
+}
 
 /* ------------ MISC ------------- */
+
+.loading {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  max-width: 25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 ul {
   list-style: none;

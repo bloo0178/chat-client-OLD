@@ -2,7 +2,9 @@ import React from 'react';
 
 const DisplayMessages = (props) => {
     if (!props.messages[0]) {
-        return null;
+        return (
+            <div className="Messages-Display"></div>
+        )
     }
     return (
         <div className="Messages-Display">

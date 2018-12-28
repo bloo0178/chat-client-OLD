@@ -16,7 +16,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: 'true', // maybe add a loading state to the redux store instead. 
+      loading: 'true'
     }
   }
 
@@ -32,11 +32,12 @@ class App extends Component {
       )
     }
     return (
-      // if no channel, then redirect to channels. 
-      // Will have to add a Redirect in the chat component. 
       <Router>
         <div>
-          <Route component={Navigation} />
+          <Route
+            render={(props) =>
+              <Navigation {...props} key={this.props.channelURL} />}
+          />
           <div className="content-wrapper">
             <Route path='/chat/:channelurl' component={Chat} />
             <Route exact path="/channels" component={Channels} />
@@ -44,14 +45,14 @@ class App extends Component {
         </div>
       </Router>
     )
-
   }
 }
 
 const mapStateToProps = state => {
   return {
     userid: state.userinfo.userid,
-    channel: state.channel.openChannel
+    channel: state.channel.openChannel,
+    channelURL: state.channel.channelURL
   }
 }
 

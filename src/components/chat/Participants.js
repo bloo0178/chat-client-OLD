@@ -38,8 +38,10 @@ class Participants extends React.Component {
             )
         } else {
             return (
-                <div>
-                    <h4>Active</h4>
+                <div className="participants">
+                    <h4>Active <FontAwesomeIcon size="xs" onClick={this.toggle}
+                        icon={this.state.icon} />
+                    </h4>
                 </div>
             )
         }

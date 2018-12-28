@@ -16,6 +16,33 @@ class Login extends React.Component {
         this.setState({ username: event.target.value })
     }
 
+    // ------------------------ BEGIN TEMP CODE --------------------------- // 
+
+    async componentDidMount() {
+        // Initialize session.
+        await (() => {
+            return new Promise(resolve => {
+                this.props.dispatch(setSBSess(process.env.REACT_APP_SB_APP_ID));
+                resolve(this.props.sb);
+            })
+        })();
+        // Connect user.
+        await (() => {
+            return new Promise(resolve => {
+                this.props.sb.connect('test', (user, error) => {
+                    if (error) console.log(error);
+                    resolve(user);
+                })
+            })
+        })();
+        // Set username in Redux store to prompt load of main app.
+        this.props.dispatch(setUserID('test'));
+        // Redirect to main
+        this.props.history.push("/channels");
+    }
+
+    // ------------------------ END TEMP CODE ----------------------------- // 
+
     handleClick = async () => {
         if (!this.state.username) {
             return;
