@@ -39,7 +39,10 @@ class App extends Component {
               <Navigation {...props} key={this.props.channelURL} />}
           />
           <div className="content-wrapper">
-            <Route path='/chat/:channelurl' component={Chat} />
+            <Route path='/chat'
+              render={(props) =>
+                <Chat {...props} key={this.props.channelURL} />}
+            />
             <Route exact path="/channels" component={Channels} />
           </div>
         </div>

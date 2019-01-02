@@ -8,10 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-//import userid from './reducers';
 import rootReducer from './reducers';
 
-//const store = createStore(userid, {});
 const store = createStore(rootReducer, {});
 
 ReactDOM.render(

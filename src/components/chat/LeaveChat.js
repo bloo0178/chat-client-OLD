@@ -11,10 +11,11 @@ class LeaveChat extends React.Component {
     handleClick = () => {
         this.props.dispatch(clearMessages());
         this.props.dispatch(clearChannelURL());
+        this.props.dispatch(clearOpenChannel());
         this.props.channel.exit((response, error) => {
             if (error) return alert(error);
-        })
-        this.props.dispatch(clearOpenChannel());
+            console.log('exited channel');
+        })   
         this.props.history.push('/channels');
     }
 

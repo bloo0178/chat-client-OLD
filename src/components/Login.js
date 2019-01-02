@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setUserID, setSBSess } from '../actions';
-import { Button, Input } from 'reactstrap';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -76,12 +78,20 @@ class Login extends React.Component {
     render() {
         return (
             <div className="Login">
-                <Input
-                    size="sm"
+                <TextField
                     placeholder="Enter a username"
+                    margin="normal"
+                    label="Username"
+                    InputLabelProps={{ shrink: true, }}
                     value={this.state.username}
-                    onChange={this.handleChange} />
-                <Button size="sm" type="submit" onClick={this.handleClick}>Submit</Button>
+                    onChange={this.handleChange}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleClick}>
+                    Submit
+                </Button>
             </div >
         )
     }

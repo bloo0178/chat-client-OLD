@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { clearMessages, setChannelURL } from '../../actions'
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class CreateChannel extends React.Component {
     constructor(props) {
@@ -24,7 +25,6 @@ class CreateChannel extends React.Component {
         if (!this.state.name) {
             return alert('Enter a channel name');
         }
-
         // Array adds the operatorID's in
         // need to add the user who created it as an operator
         this.props.sb.OpenChannel.createChannel(this.state.name, null, null, ['admin', 'test', this.props.userid], (channel, error) => {
@@ -49,17 +49,25 @@ class CreateChannel extends React.Component {
         return (
             <div>
                 <h4>Create a Channel</h4>
-                <InputGroup>
-                <Input
-                    size="sm"
-                    placeholder="Enter a channel name"
+                <TextField
+                    label="Channel Name"
+                    style={{ margin: 8 }}
+                    //placeholder="Enter your new channel name"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                     value={this.state.name}
-                    onChange={this.handleChange}>
-                </Input>
-                <InputGroupAddon addonType="append">
-                <Button size="sm" onClick={this.handleClick}>Create</ Button>
-                </InputGroupAddon>
-                </InputGroup>
+                    onChange={this.handleChange}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleClick}>
+                    Create
+                </Button>
             </div>
         )
     }
@@ -73,4 +81,5 @@ const mapStateToProps = state => {
     }
 }
 
+//export default connect(mapStateToProps)(withStyles(styles)(CreateChannel));
 export default connect(mapStateToProps)(CreateChannel);

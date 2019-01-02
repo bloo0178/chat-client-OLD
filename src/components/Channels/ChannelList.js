@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ListGroup, ListGroupItem } from 'reactstrap';
 import { clearMessages, setChannelURL } from '../../actions'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
 class ChannelList extends React.Component {
     constructor(props) {
@@ -21,30 +24,31 @@ class ChannelList extends React.Component {
         })
     }
 
-    handleClick = (event) => {
+    handleClick = channelURL => event => {
         this.props.dispatch(clearMessages());
-        this.props.dispatch(setChannelURL(event.target.id));
-        this.props.history.push(`/chat/${event.target.id}`);
+        this.props.dispatch(setChannelURL(channelURL));
+        this.props.history.push(`/chat/${channelURL}`);
     }
 
     render() {
         return (
             <div>
                 <h4>Join a Channel</h4>
-                <ListGroup>
+                <List>
                     {this.state.channels.map((channel, index) => {
                         return (
-                            <ListGroupItem
-                                key={channel.name + index.toString()}
-                                id={channel.url}
-                                size="sm"
-                                action
-                                onClick={this.handleClick}>
-                                {channel.name}
-                            </ListGroupItem>
+                            <div>
+                                <ListItem
+                                    button
+                                    key={channel.name + index.toString()}
+                                    onClick={this.handleClick(channel.url)}>
+                                    <ListItemText primary={channel.name} />
+                                </ListItem>
+                                <Divider />
+                            </div>
                         )
                     })}
-                </ListGroup>
+                </List>
             </div>
         )
     }
