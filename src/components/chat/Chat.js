@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setOpenChannel } from '../../actions';
 import { Redirect } from 'react-router-dom';
-import ReactLoading from 'react-loading';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
@@ -64,7 +64,7 @@ class Chat extends React.Component {
         if (this.state.loading === true) {
             return (
                 <div className='loading'>
-                    <ReactLoading type={"spin"} color={"gray"} />
+                    <CircularProgress />
                 </div>
             )
         }
