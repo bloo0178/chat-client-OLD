@@ -1,7 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addMessage } from '../../actions';
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+const styles = {
+    container: {
+        width: '80%',
+        marginLeft: '10%',
+        marginRight: '10%',
+        paddingBottom: '1em',
+        alignSelf: 'flex-end',
+        paddingBottom: '1em',
+        //position: 'fixed',
+        //bottom: '0px',
+    },
+    textField: {
+        width: '60%'
+    },
+    dense: {
+        marginTop: 16,
+    },
+    button: {
+        margin: '5px'
+    }
+};
 
 class CreateMessage extends React.Component {
     constructor(props) {
@@ -25,24 +50,28 @@ class CreateMessage extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <div className="Create-Message">
-                <InputGroup>
-                    <Input
-                        size="sm"
-                        onChange={this.handleChange}
-                        value={this.state.message}>
-                    </Input>
-                    <InputGroupAddon addonType="append">
-                        <Button
-                            size="sm"
-                            onClick={this.handleClick}>
-                            Send</Button>
-                    </InputGroupAddon>
-                </InputGroup>
+            <div className={classes.container}>
+                <TextField
+                    multiline
+                    rowsMax="4"
+                    value={this.state.message}
+                    onChange={this.handleChange}
+                    className={classes.textField}
+                    margin="normal"
+                    variant="outlined"
+                />
+                <Button className={classes.button}
+                    variant="contained"
+                    onClick={this.handleClick}
+                    color="primary">
+                    Send
+                </Button>
             </div>
         )
     }
 }
 
-export default connect()(CreateMessage);
+export default connect()(withStyles(styles)(CreateMessage));

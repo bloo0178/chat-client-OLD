@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 import { clearMessages, clearChannelURL, clearOpenChannel } from '../../actions';
 
 class LeaveChat extends React.Component {
@@ -21,7 +21,7 @@ class LeaveChat extends React.Component {
 
     render() {
         return (
-            <Button size="sm" onClick={this.handleClick}>Leave Chat</Button>
+            <Button variant="contained" onClick={this.handleClick}>Leave Chat</Button>
         )
     }
 }

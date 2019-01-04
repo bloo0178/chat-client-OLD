@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { setUserID, setSBSess } from '../actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 
+const styles = {
+    root: {
+        height: '100vh',
+    }
+}
 
 class Login extends React.Component {
     constructor(props) {
@@ -76,8 +83,15 @@ class Login extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
-            <div className="Login">
+            <Grid
+                container
+                className={classes.root}
+                direction="column"
+                justify="center"
+                alignItems="center"
+            >
                 <TextField
                     placeholder="Enter a username"
                     margin="normal"
@@ -92,7 +106,8 @@ class Login extends React.Component {
                     onClick={this.handleClick}>
                     Submit
                 </Button>
-            </div >
+
+            </Grid>
         )
     }
 }
@@ -104,4 +119,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(withStyles(styles)(Login));

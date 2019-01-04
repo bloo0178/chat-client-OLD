@@ -6,11 +6,21 @@ import Channels from './components/Channels/Channels';
 import Chat from './components/Chat/Chat';
 import Navigation from './components/Navbar';
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import Snackbar from './components/Snackbar';
+import { withStyles } from '@material-ui/core/styles';
+//import Grid from '@material-ui/core/Grid';
 
-library.add(faMinus, faPlus);
+const styles = {
+  root: {
+     //marginTop: '4rem',
+     //height: 'calc(100vh - 6.5rem)',
+     height: '100%',
+     //width: '95%', // THIS IS CAUSING THE SCROLLBAR ON THE BOTTOM WHEN SET TO 100%
+     display: 'flex',
+     flexFlow: 'row wrap',
+     padding: '1rem',
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +31,7 @@ class App extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     if (!this.props.userid) {
       return (
         <Router>
@@ -38,7 +49,7 @@ class App extends Component {
             render={(props) =>
               <Navigation {...props} key={this.props.channelURL} />}
           />
-          <div className="content-wrapper">
+          <div className={classes.root}>
             <Route path='/chat'
               render={(props) =>
                 <Chat {...props} key={this.props.channelURL} />}
@@ -59,4 +70,5 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+//export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withStyles(styles)(App));

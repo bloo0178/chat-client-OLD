@@ -1,23 +1,28 @@
 import React from 'react';
-import { Collapse } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+
+const styles = {
+    root: {
+        width: '100%',
+        alignSelf: 'flex-start',
+    }
+};
 
 class Participants extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapse: true,
-            icon: 'minus',
+            open: true,
             participantList: []
         };
-    }
-
-    toggle = () => {
-        if (this.state.collapse === true) {
-            this.setState({ icon: 'plus' })
-        } else { this.setState({ icon: 'minus' }) }
-        this.setState({ collapse: !this.state.collapse });
-    }
+    };
 
     componentDidMount() {
         let participantListQuery = this.props.channel.createParticipantListQuery();
@@ -32,25 +37,41 @@ class Participants extends React.Component {
         })
     }
 
+    handleClick = () => {
+        this.setState({ open: !this.state.open })
+    }
+
     render() {
+        const { classes } = this.props;
+
         return (
             <div className="participants">
-                <h4>Active <FontAwesomeIcon size="xs" onClick={this.toggle}
-                    icon={this.state.icon} />
+                <h4
+                    className={classes.root}
+                    onClick={this.handleClick}
+                >
+                    Participants
+                {this.state.open ? <ExpandLess /> : <ExpandMore />}
                 </h4>
-                <Collapse isOpen={this.state.collapse}>
-                    <ul>
+                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
                         {this.state.participantList.map((participant, index) => {
                             return (
-                                <li key={participant + index.toString()}>{participant}</li>
+                                <ListItem
+                                    key={participant + index.toString()}
+                                    className={classes.nested}>
+                                    {participant}
+                                </ListItem>
                             )
                         })}
-                    </ul>
+                    </List>
                 </Collapse>
+
             </div>
         )
+
     }
 
 }
 
-export default Participants;
+export default withStyles(styles)(Participants);

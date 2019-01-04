@@ -5,6 +5,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = {
+    root: {
+        width: '100%',
+        minWidth: 300,
+        maxWidth: 600,
+    }
+}
 
 class ChannelList extends React.Component {
     constructor(props) {
@@ -31,8 +40,9 @@ class ChannelList extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.root}>
                 <h4>Join a Channel</h4>
                 <List>
                     {this.state.channels.map((channel, index) => {
@@ -60,4 +70,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ChannelList);
+export default connect(mapStateToProps)(withStyles(styles)(ChannelList));

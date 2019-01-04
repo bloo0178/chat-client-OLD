@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { clearMessages, clearChannelURL, clearOpenChannel } from '../../actions';
+import Button from '@material-ui/core/Button';
 
 class DeleteChannel extends React.Component {
     constructor(props) {
@@ -31,7 +31,7 @@ class DeleteChannel extends React.Component {
 
     render() {
         return (
-            <Button size="sm" color="danger" onClick={this.handleClick}>Delete Chat</Button>
+            <Button variant="contained" color="secondary" onClick={this.handleClick}>Delete Chat</Button>
         )
     }
 }

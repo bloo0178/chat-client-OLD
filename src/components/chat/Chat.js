@@ -9,6 +9,28 @@ import DisplayMessages from './DisplayMessages';
 import LeaveChat from './LeaveChat';
 import DeleteChat from './DeleteChat';
 import Handlers from './Handlers';
+import { withStyles } from '@material-ui/core/styles';
+import { SSL_OP_SINGLE_DH_USE } from 'constants';
+
+// 1 - Use MUI Grid
+// 2 - Use MUI footer (fixed, static, absolute positioning)
+// 3 - Use multiple divs with flexboxes in each (separate div for msgs, input, etc.)
+const styles = {
+    root: {
+        width: '100%',
+        height: '90vh',
+        display: 'flex',
+        flexFlow: 'column',
+        //flexFlow: 'row wrap',
+        border: 'solid'
+    },
+    messages: {
+        height: '60vh'
+    },
+    input: {
+        height: '20vh'
+    }
+}
 
 class Chat extends React.Component {
     constructor(props) {
@@ -55,6 +77,7 @@ class Chat extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
         if (!this.props.channelURL) {
             alert('Select a channel to join.');
             return (
@@ -69,18 +92,22 @@ class Chat extends React.Component {
             )
         }
         return (
-            <div className='Chat-Wrapper' >
+            <div className={classes.root} >
                 <div>
                     <Handlers updateParticipantList={this.updateParticipantList} />
-                    <p>Channel: {this.props.channel.name}</p>
+                    <h4>Channel: {this.props.channel.name}</h4>
                     <LeaveChat history={this.props.history} />
                     <DeleteChat history={this.props.history} />
                 </div>
-                <Participants
-                    channel={this.props.channel}
-                    key={this.state.participantsKey} />
+                {/*<Participants
+                        channel={this.props.channel}
+                    key={this.state.participantsKey} />*/}
+                    <div className={classes.messages}>
                 <DisplayMessages messages={this.props.messages} />
-                <CreateMessage channel={this.props.channel} />
+                </div>
+                <div className={classes.input}>
+                    <CreateMessage channel={this.props.channel} />
+                </div>
             </div>
         )
     }
@@ -96,5 +123,5 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Chat);
+export default connect(mapStateToProps)(withStyles(styles)(Chat));
 
