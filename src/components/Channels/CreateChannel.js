@@ -1,77 +1,107 @@
 import React from 'react';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { clearMessages, setChannelURL } from '../../actions'
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+
+const styles = {
+    root: {
+    },
+    fab: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        margin: 15
+    }
+}
 
 class CreateChannel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            open: false,
             name: '',
-            channelCreated: false
         }
-    }
+    };
+
+    handleClick = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     handleChange = (event) => {
         this.setState({
             name: event.target.value
         })
-    }
+    };
 
-    handleClick = async () => {
+    handleCreate = () => {
         var channelURL;
         if (!this.state.name) {
             return alert('Enter a channel name');
         }
         // Array adds the operatorID's in
         // need to add the user who created it as an operator
-        this.props.sb.OpenChannel.createChannel(this.state.name, null, null, ['admin', 'test', this.props.userid], (channel, error) => {
-            if (error) { return console.log(error); }
-            channelURL = channel.url;
-            this.props.dispatch(clearMessages());
-            this.props.dispatch(setChannelURL(channelURL));
-            this.setState({
-                channelCreated: true
-            })
-        });
-    }
+        this.props.sb.OpenChannel.createChannel(this.state.name, null, null,
+            ['admin', 'test', this.props.userid], (channel, error) => {
+                if (error) { return console.log(error); }
+                channelURL = channel.url;
+                this.props.dispatch(clearMessages());
+                this.props.dispatch(setChannelURL(channelURL));
+                this.props.history.push(`/chat/${channelURL}`);
+            });
+    };
 
     render() {
-        if (this.state.channelCreated) {
-            return (
-                <Redirect to={{
-                    pathname: `/chat/${this.props.channelURL}`
-                }} />
-            )
-        }
+        const { classes } = this.props;
         return (
             <div>
-                <h4>Create a Channel</h4>
-                <TextField
-                    label="Channel Name"
-                    style={{ margin: 8 }}
-                    //placeholder="Enter your new channel name"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleClick}>
-                    Create
-                </Button>
+                <Fab color="primary"
+                    aria-label="Add"
+                    onClick={this.handleClick}
+                    className={classes.fab}>
+                    <AddIcon />
+                </Fab>
+
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">Create Channel</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Channel Name"
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleCreate} color="primary">
+                            Create
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
-    }
-}
+    };
+};
 
 const mapStateToProps = state => {
     return {
@@ -81,5 +111,5 @@ const mapStateToProps = state => {
     }
 }
 
-//export default connect(mapStateToProps)(withStyles(styles)(CreateChannel));
-export default connect(mapStateToProps)(CreateChannel);
+export default connect(mapStateToProps)(withStyles(styles)(CreateChannel));
+

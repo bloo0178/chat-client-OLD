@@ -7,21 +7,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const styles = {
-    container: {
-        width: '80%',
-        marginLeft: '10%',
-        marginRight: '10%',
-        paddingBottom: '1em',
-        alignSelf: 'flex-end',
-        paddingBottom: '1em',
-        //position: 'fixed',
-        //bottom: '0px',
+    root: {
+        display: 'flex',
+        flexFlow: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     textField: {
         width: '60%'
-    },
-    dense: {
-        marginTop: 16,
     },
     button: {
         margin: '5px'
@@ -53,7 +46,7 @@ class CreateMessage extends React.Component {
         const { classes } = this.props;
 
         return (
-            <div className={classes.container}>
+            <div className={classes.root}>
                 <TextField
                     multiline
                     rowsMax="4"

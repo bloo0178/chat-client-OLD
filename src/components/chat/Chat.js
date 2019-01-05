@@ -6,29 +6,36 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
-import LeaveChat from './LeaveChat';
-import DeleteChat from './DeleteChat';
 import Handlers from './Handlers';
 import { withStyles } from '@material-ui/core/styles';
-import { SSL_OP_SINGLE_DH_USE } from 'constants';
+import OptionsMenu from './OptionsMenu';
 
-// 1 - Use MUI Grid
-// 2 - Use MUI footer (fixed, static, absolute positioning)
-// 3 - Use multiple divs with flexboxes in each (separate div for msgs, input, etc.)
 const styles = {
     root: {
         width: '100%',
-        height: '90vh',
+        height: '90vh', // maybe position at bottom?
         display: 'flex',
         flexFlow: 'column',
-        //flexFlow: 'row wrap',
-        border: 'solid'
+        justifyContent: 'flex-end',
+        
     },
-    messages: {
-        height: '60vh'
+    displayMessages: {
+        overflowY: 'auto',
     },
-    input: {
-        height: '20vh'
+    createMessage: {
+        //boxSizing: 'border-box',
+        //border: 'solid orange',
+        width: '100%'
+    }, 
+    infoContainer: {
+        maxHeight: '7vh',
+        minHeight: '7vh',
+        marginBottom: 'auto',
+        display: 'flex',
+        flexFlow: 'row',
+        alignItems: 'center',
+        paddingLeft: '10px',
+        paddingRight: '10px',
     }
 }
 
@@ -93,19 +100,18 @@ class Chat extends React.Component {
         }
         return (
             <div className={classes.root} >
-                <div>
+                <div className={classes.infoContainer}>
                     <Handlers updateParticipantList={this.updateParticipantList} />
                     <h4>Channel: {this.props.channel.name}</h4>
-                    <LeaveChat history={this.props.history} />
-                    <DeleteChat history={this.props.history} />
+                    <OptionsMenu history={this.props.history} />
                 </div>
                 {/*<Participants
                         channel={this.props.channel}
                     key={this.state.participantsKey} />*/}
-                    <div className={classes.messages}>
+                    <div className={classes.displayMessages}>
                 <DisplayMessages messages={this.props.messages} />
                 </div>
-                <div className={classes.input}>
+                <div className={classes.createMessage}>
                     <CreateMessage channel={this.props.channel} />
                 </div>
             </div>

@@ -12,13 +12,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   root: {
-     //marginTop: '4rem',
-     //height: 'calc(100vh - 6.5rem)',
-     height: '100%',
-     //width: '95%', // THIS IS CAUSING THE SCROLLBAR ON THE BOTTOM WHEN SET TO 100%
-     display: 'flex',
-     flexFlow: 'row wrap',
-     padding: '1rem',
+     //display: 'flex',
+     //flexFlow: 'column',
   }
 }
 
