@@ -27,7 +27,7 @@ class Login extends React.Component {
 
     // ------------------------ BEGIN TEMP CODE --------------------------- // 
 
-    async componentDidMount() {
+    /*async componentDidMount() {
         // Initialize session.
         await (() => {
             return new Promise(resolve => {
@@ -48,7 +48,7 @@ class Login extends React.Component {
         this.props.dispatch(setUserID('test'));
         // Redirect to main
         this.props.history.push("/channels");
-    }
+    }*/
 
     // ------------------------ END TEMP CODE ----------------------------- // 
 

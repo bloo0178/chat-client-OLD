@@ -17,16 +17,14 @@ const styles = {
         display: 'flex',
         flexFlow: 'column',
         justifyContent: 'flex-end',
-        
+
     },
     displayMessages: {
         overflowY: 'auto',
     },
     createMessage: {
-        //boxSizing: 'border-box',
-        //border: 'solid orange',
         width: '100%'
-    }, 
+    },
     infoContainer: {
         maxHeight: '7vh',
         minHeight: '7vh',
@@ -48,6 +46,7 @@ class Chat extends React.Component {
         }
     }
 
+    // ----------------- MAY BE ABLE TO DELETE THIS ------------------------- //
     // Triggers a change of the key value associated to the Participants component
     // when the channel handler detects a participant joined or left. 
     updateParticipantList = () => {
@@ -73,7 +72,6 @@ class Chat extends React.Component {
         })();
 
         this.setState({ loading: false })
-        this.updateParticipantList(this.props.channel);
 
         window.addEventListener("beforeunload", (event) => {
             event.preventDefault();
@@ -103,13 +101,16 @@ class Chat extends React.Component {
                 <div className={classes.infoContainer}>
                     <Handlers updateParticipantList={this.updateParticipantList} />
                     <h4>Channel: {this.props.channel.name}</h4>
-                    <OptionsMenu history={this.props.history} />
-                </div>
-                {/*<Participants
+                    <OptionsMenu history={this.props.history} key={this.state.participantsKey}/>
+                    {/*<div>
+                    <Participants2
                         channel={this.props.channel}
-                    key={this.state.participantsKey} />*/}
-                    <div className={classes.displayMessages}>
-                <DisplayMessages messages={this.props.messages} />
+                    key={this.state.participantsKey} />
+                    </div>*/}
+                </div>
+                
+                <div className={classes.displayMessages}>
+                    <DisplayMessages messages={this.props.messages} />
                 </div>
                 <div className={classes.createMessage}>
                     <CreateMessage channel={this.props.channel} />

@@ -26,9 +26,9 @@ export const clearChannelURL = () => ({
     type: 'CLEAR_CHANNEL_URL'
 })
 
-// will need to add senderID here
-export const addMessage = message => ({
+export const addMessage = (sender,message) => ({
     type: 'ADD_MESSAGE',
+    sender, // will be either 'You', [other senderID], or 'info'
     message
 })
 

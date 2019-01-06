@@ -61,6 +61,7 @@ const messages = (state = [], action) => {
             return [
                 ...state,
                 {
+                    sender: action.sender,
                     message: action.message
                 }
             ]

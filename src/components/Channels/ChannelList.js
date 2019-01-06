@@ -47,10 +47,10 @@ class ChannelList extends React.Component {
                 <List>
                     {this.state.channels.map((channel, index) => {
                         return (
-                            <div>
+                            <div key={channel.name + index.toString()}>
                                 <ListItem
                                     button
-                                    key={channel.name + index.toString()}
+                                    
                                     onClick={this.handleClick(channel.url)}>
                                     <ListItemText primary={channel.name} />
                                 </ListItem>

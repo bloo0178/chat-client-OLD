@@ -38,7 +38,8 @@ class CreateMessage extends React.Component {
             if (error) return console.log(error);
             console.log(message.message);
         })
-        this.props.dispatch(addMessage(`You: ${this.state.message}`));
+        //this.props.dispatch(addMessage(`You: ${this.state.message}`));
+        this.props.dispatch(addMessage('You', this.state.message));
         this.setState({ message: '' });
     }
 
