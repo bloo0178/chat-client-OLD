@@ -50,10 +50,9 @@ class CreateChannel extends React.Component {
         if (!this.state.name) {
             return alert('Enter a channel name');
         }
-        // Array adds the operatorID's in
-        // need to add the user who created it as an operator
+        // Array adds the operatorID's to the channel (provides admin privs). 
         this.props.sb.OpenChannel.createChannel(this.state.name, null, null,
-            ['admin', 'test', this.props.userid], (channel, error) => {
+            ['admin', this.props.userid], (channel, error) => {
                 if (error) { return console.log(error); }
                 channelURL = channel.url;
                 this.props.dispatch(clearMessages());

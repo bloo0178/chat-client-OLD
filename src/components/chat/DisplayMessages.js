@@ -71,7 +71,7 @@ class DisplayMessages extends React.Component {
                         if (message.sender === 'You') {
                             bubbleClass = classes.bubbleYou;
                             displayMessage = `${message.sender}: ${message.message}`;
-                        } else if (message.sender == 'info') {
+                        } else if (message.sender === 'info') {
                             bubbleClass = classes.infoMessage;
                             displayMessage = `${message.message}`
                         }

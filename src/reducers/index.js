@@ -3,18 +3,18 @@ import * as SendBird from 'sendbird';
 
 //https://redux.js.org/basics/reducers
 
-const userinfoInitState = { userid: '' }
+const userinfoInitState = { userid: '' };
 
 const userinfo = (state = userinfoInitState, action) => {
     switch (action.type) {
         case 'SET_USERID':
             return Object.assign({}, state, {
                 userid: action.userid
-            })
+            });
         default:
             return state
     }
-}
+};
 
 const sbsession = (state = '', action) => {
     switch (action.type) {
@@ -22,10 +22,12 @@ const sbsession = (state = '', action) => {
             return Object.assign({}, state, {
                 sbsession: new SendBird({ 'appId': action.appid })
             })
+        case 'CLEAR_SBSESS': 
+            return '';
         default:
             return state
     }
-}
+};
 
 const channelInitState = {openChannel: '', channelURL: ''}
 
@@ -50,7 +52,7 @@ const channel = (state = channelInitState, action) => {
         default:
             return state;
     }
-}
+};
 
 // Messages are kept in Redux store to allow them to persist and
 // re-load despite the user potentially navigating to different screens
@@ -68,16 +70,16 @@ const messages = (state = [], action) => {
         case 'CLEAR_MESSAGES': 
             return [];
         default:
-            return state
+            return state;
     }
-}
+};
 
 const rootReducer = combineReducers({
     userinfo: userinfo,
     sbsession: sbsession,
     channel: channel,
     messages: messages
-})
+});
 
 export default rootReducer;
 

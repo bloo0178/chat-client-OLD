@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addMessage } from '../../actions';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -38,7 +37,6 @@ class CreateMessage extends React.Component {
             if (error) return console.log(error);
             console.log(message.message);
         })
-        //this.props.dispatch(addMessage(`You: ${this.state.message}`));
         this.props.dispatch(addMessage('You', this.state.message));
         this.setState({ message: '' });
     }

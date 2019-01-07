@@ -27,7 +27,7 @@ class Login extends React.Component {
 
     // ------------------------ BEGIN TEMP CODE --------------------------- // 
 
-    /*async componentDidMount() {
+   async componentDidMount() {
         // Initialize session.
         await (() => {
             return new Promise(resolve => {
@@ -48,39 +48,35 @@ class Login extends React.Component {
         this.props.dispatch(setUserID('test'));
         // Redirect to main
         this.props.history.push("/channels");
-    }*/
+    };
 
     // ------------------------ END TEMP CODE ----------------------------- // 
 
     handleClick = async () => {
         if (!this.state.username) {
             return;
-        }
-        try {
-            // Initialize session.
-            await (() => {
-                return new Promise(resolve => {
-                    this.props.dispatch(setSBSess(process.env.REACT_APP_SB_APP_ID));
-                    resolve(this.props.sb);
+        };
+        // Initialize session.
+        await (() => {
+            return new Promise(resolve => {
+                this.props.dispatch(setSBSess(process.env.REACT_APP_SB_APP_ID));
+                resolve(this.props.sb);
+            })
+        })();
+        // Connect user.
+        await (() => {
+            return new Promise(resolve => {
+                this.props.sb.connect(this.state.username, (user, error) => {
+                    if (error) console.log(error);
+                    resolve(user);
                 })
-            })();
-            // Connect user.
-            await (() => {
-                return new Promise(resolve => {
-                    this.props.sb.connect(this.state.username, (user, error) => {
-                        if (error) console.log(error);
-                        resolve(user);
-                    })
-                })
-            })();
-            // Set username in Redux store to prompt load of main app.
-            this.props.dispatch(setUserID(this.state.username));
-            // Redirect to main
-            this.props.history.push("/channels");
-        } catch (err) {
-            console.log(err);
-        }
-    }
+            })
+        })();
+        // Set username in Redux store to prompt load of main app.
+        this.props.dispatch(setUserID(this.state.username));
+        // Redirect to main
+        this.props.history.push("/channels");
+    };
 
     render() {
         const { classes } = this.props;
@@ -109,14 +105,14 @@ class Login extends React.Component {
 
             </Grid>
         )
-    }
-}
+    };
+};
 
 // Defined in the Reducer
 const mapStateToProps = state => {
     return {
         sb: state.sbsession.sbsession
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps)(withStyles(styles)(Login));

@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setOpenChannel } from '../../actions';
+import { setOpenChannel, addMessage } from '../../actions';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Participants from './Participants';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
-import Handlers from './Handlers';
 import { withStyles } from '@material-ui/core/styles';
 import OptionsMenu from './OptionsMenu';
 
@@ -34,6 +32,12 @@ const styles = {
         alignItems: 'center',
         paddingLeft: '10px',
         paddingRight: '10px',
+    },
+    loadingSpinner: {
+        height: '90vh', // maybe position at bottom?
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }
 
@@ -51,7 +55,7 @@ class Chat extends React.Component {
     // when the channel handler detects a participant joined or left. 
     updateParticipantList = () => {
         this.setState({
-            participantsKey: !this.state.participantsKey
+            updateParticipantsList: !this.state.updateParticipantsList
         })
     }
 
@@ -70,6 +74,25 @@ class Chat extends React.Component {
                 })
             })
         })();
+
+        // ------ EVENT HANDLERS ------
+        // https://docs.sendbird.com/javascript/event_handler#3_channel_handler 
+        var ChannelHandler = new this.props.sb.ChannelHandler();
+        this.props.sb.addChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`, ChannelHandler);
+
+        ChannelHandler.onUserEntered = (openChannel, user) => {
+            this.updateParticipantList();
+            this.props.dispatch(addMessage('info', `${user.userId} has joined.`))
+        };
+
+        ChannelHandler.onUserExited = (openChannel, user) => {
+            this.updateParticipantList();
+            this.props.dispatch(addMessage('info', `${user.userId} has left.`))
+        };
+
+        ChannelHandler.onMessageReceived = (channel, message) => {
+            this.props.dispatch(addMessage(message._sender.userId, message.message));
+        };
 
         this.setState({ loading: false })
 
@@ -91,7 +114,7 @@ class Chat extends React.Component {
         }
         if (this.state.loading === true) {
             return (
-                <div className='loading'>
+                <div className={classes.loadingSpinner}>
                     <CircularProgress />
                 </div>
             )
@@ -99,16 +122,12 @@ class Chat extends React.Component {
         return (
             <div className={classes.root} >
                 <div className={classes.infoContainer}>
-                    <Handlers updateParticipantList={this.updateParticipantList} />
                     <h4>Channel: {this.props.channel.name}</h4>
-                    <OptionsMenu history={this.props.history} key={this.state.participantsKey}/>
-                    {/*<div>
-                    <Participants2
-                        channel={this.props.channel}
-                    key={this.state.participantsKey} />
-                    </div>*/}
+                    <OptionsMenu
+                        {...this.props} // includes sendAlert for snackbar
+                        history={this.props.history}
+                        key={this.state.updateParticipantsList} />
                 </div>
-                
                 <div className={classes.displayMessages}>
                     <DisplayMessages messages={this.props.messages} />
                 </div>

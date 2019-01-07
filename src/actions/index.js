@@ -8,6 +8,10 @@ export const setSBSess = appid => ({
     appid
 })
 
+export const clearSBSess = () => ({
+    type: 'CLEAR_SBSESS',
+})
+
 export const setOpenChannel = openChannel => ({
     type: 'SET_OPEN_CHANNEL', 
     openChannel

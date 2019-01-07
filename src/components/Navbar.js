@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { clearMessages, clearChannelURL, clearOpenChannel, clearSBSess } from '../actions';
 
 const styles = {
     root: {
@@ -32,17 +33,32 @@ class Navigation extends React.Component {
         }
     };
 
-    logout = () => {
+    logout = async () => {
+        this.props.dispatch(clearMessages());
+        this.props.dispatch(clearChannelURL());
+        this.props.dispatch(clearOpenChannel());
+        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
         if (this.props.channel) {
-            this.props.channel.exit((response, error) => {
-                if (error) console.log(error);
-                console.log('Exited channel via logout');
-            })
+            await (() => {
+                return new Promise(resolve => {
+                    this.props.channel.exit((response, error) => {
+                        if (error) console.log(error);
+                        console.log('Exited channel via logout');
+                        resolve();
+                    })
+                })
+            })();
         }
-        this.props.sb.disconnect(() => {
-            console.log("Disconnected from SendBird via logout.");
-        })
+        await (() => {
+            return new Promise(resolve => {
+                this.props.sb.disconnect(() => {
+                    console.log('Disconnected from SendBird via logout.');
+                    resolve();
+                })
+            })
+        })();
         this.props.dispatch(setUserID(''));
+        //this.props.dispatch(clearSBSess()); !!! DELETE THIS THROUGHOUT APP
     };
 
     handleClick = event => {
@@ -62,7 +78,7 @@ class Navigation extends React.Component {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        <Typography variant="h6" color="inherit" className={classes.grow}>
                             react.chat
                         </Typography>
                         <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
@@ -95,7 +111,6 @@ class Navigation extends React.Component {
                                 </MenuItem>
                             </Menu>
                         </IconButton>
-                        {/*<Button color="inherit">Logout</Button>*/}
                     </Toolbar>
                 </AppBar>
             </div>
@@ -105,8 +120,9 @@ class Navigation extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        userid: state.userinfo.userid,
         sb: state.sbsession.sbsession,
-        channel: state.channel.channel,
+        channel: state.channel.openChannel,
         channelURL: state.channel.channelURL
     }
 }

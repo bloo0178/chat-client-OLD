@@ -12,9 +12,9 @@ class OptionsMenu extends React.Component {
         super(props);
         this.state = {
             anchorEl: null,
-            openParticipants: false,
+            toggleParticipants: false,
         };
-    }
+    };
 
     handleClick = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -28,40 +28,42 @@ class OptionsMenu extends React.Component {
         this.props.dispatch(clearMessages());
         this.props.dispatch(clearChannelURL());
         this.props.dispatch(clearOpenChannel());
+        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
         this.props.channel.exit((response, error) => {
             if (error) return alert(error);
-            console.log('exited channel');
-        })
+        });
         this.props.history.push('/channels');
-    }
+    };
 
     handleDelete = () => {
         this.props.dispatch(clearMessages());
         this.props.dispatch(clearOpenChannel()); // Not sure this is needed. May refactor without.
+        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
         this.props.sb.OpenChannel.getChannel(this.props.channelURL, (channel, error) => {
             if (error) {
                 return console.log(error);
-            }
+            };
             channel.delete((response, error) => {
                 if (error) {
                     console.log(error);
                     return alert('You are not an admin of the channel you are trying to delete.');
                 }
-                alert("Channel deleted.");
+                console.log(channel);
                 this.props.history.push("/channels");
+                this.props.sendAlert(`Channel ${channel.name} deleted.`); 
                 this.props.dispatch(clearChannelURL());
-            })
-        })
-    }
+            });
+        });
+    };
 
-    handleParticipants = () => {
+    toggleParticipants = () => {
         this.setState({
-            openParticipants: !this.state.participantsModal
-        })
-    }
+            toggleParticipants: !this.state.toggleParticipants,
+        });
+        this.handleClose();
+    };
 
     render() {
-        console.dir(this.props.channel);
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
@@ -77,7 +79,7 @@ class OptionsMenu extends React.Component {
                     open={open}
                     onClose={this.handleClose}
                 >
-                    <MenuItem onClick={this.handleParticipants}>
+                    <MenuItem onClick={this.toggleParticipants}>
                         View Participants
                     </MenuItem>
                     <MenuItem onClick={this.handleLeave}>
@@ -87,19 +89,19 @@ class OptionsMenu extends React.Component {
                         Delete Channel
                     </MenuItem>
                 </Menu>
-                {/*<TemporaryDrawer channel={this.props.channel} key={this.props.updateParticipants}/>*/}
-                <Participants channel={this.props.channel} />
+                <Participants channel={this.props.channel} open={this.state.toggleParticipants} toggle={this.toggleParticipants}/>
             </div>
         );
-    }
-}
+    };
+};
 
 const mapStateToProps = state => {
     return {
         channel: state.channel.openChannel,
+        userid: state.userinfo.userid,
         sb: state.sbsession.sbsession,
         channelURL: state.channel.channelURL
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps)(OptionsMenu);
