@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import { initializeSBSession, connectUser } from '../api/sendbirdAPI';
+import { login } from '../api/sb_api';
 
 const styles = {
     root: {
@@ -27,16 +26,14 @@ class Login extends React.Component {
 
     // ------------------------ BEGIN TEMP CODE --------------------------- // 
     async componentDidMount() {
-        await initializeSBSession(process.env.REACT_APP_SB_APP_ID);
-        await connectUser('test', this.props.sb);
+        await login('test');
         this.props.history.push('/channels');
     };
     // ------------------------ END TEMP CODE ----------------------------- // 
 
     handleClick = async () => {
         if (!this.state.username) return;
-        await initializeSBSession(process.env.REACT_APP_SB_APP_ID);
-        await connectUser(this.state.username, this.props.sb);
+        await login(this.state.username);
         this.props.history.push('/channels');
     };
 
@@ -64,17 +61,9 @@ class Login extends React.Component {
                     onClick={this.handleClick}>
                     Submit
                 </Button>
-
             </Grid>
         )
     };
 };
 
-// Defined in the Reducer
-const mapStateToProps = state => {
-    return {
-        sb: state.sbsession.sbsession
-    };
-};
-
-export default connect(mapStateToProps)(withStyles(styles)(Login));
+export default withStyles(styles)(Login);

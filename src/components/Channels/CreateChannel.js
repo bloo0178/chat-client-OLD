@@ -8,8 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
-import { clearMessages, setChannelURL } from '../../actions'
+import { createChannel, enterChannel } from '../../api/sb_api';
 
 const styles = {
     root: {
@@ -20,7 +19,7 @@ const styles = {
         right: 0,
         margin: 15
     }
-}
+};
 
 class CreateChannel extends React.Component {
     constructor(props) {
@@ -45,20 +44,13 @@ class CreateChannel extends React.Component {
         })
     };
 
-    handleCreate = () => {
-        var channelURL;
+    handleCreate = async () => {
         if (!this.state.name) {
-            return alert('Enter a channel name');
-        }
-        // Array adds the operatorID's to the channel (provides admin privs). 
-        this.props.sb.OpenChannel.createChannel(this.state.name, null, null,
-            ['admin', this.props.userid], (channel, error) => {
-                if (error) { return console.log(error); }
-                channelURL = channel.url;
-                this.props.dispatch(clearMessages());
-                this.props.dispatch(setChannelURL(channelURL));
-                this.props.history.push(`/chat/${channelURL}`);
-            });
+            return alert('Enter a channel name.');
+        };
+        let newChannelURL = await createChannel(this.state.name); 
+        await enterChannel(newChannelURL);
+        this.props.history.push(`/chat/${newChannelURL}`);
     };
 
     render() {
@@ -66,7 +58,6 @@ class CreateChannel extends React.Component {
         return (
             <div>
                 <Fab color="primary"
-                    aria-label="Add"
                     onClick={this.handleClick}
                     className={classes.fab}>
                     <AddIcon />
@@ -75,7 +66,6 @@ class CreateChannel extends React.Component {
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
-                    aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">Create Channel</DialogTitle>
                     <DialogContent>
@@ -102,13 +92,5 @@ class CreateChannel extends React.Component {
     };
 };
 
-const mapStateToProps = state => {
-    return {
-        sb: state.sbsession.sbsession,
-        channelURL: state.channel.channelURL,
-        userid: state.userinfo.userid
-    }
-}
-
-export default connect(mapStateToProps)(withStyles(styles)(CreateChannel));
+export default withStyles(styles)(CreateChannel);
 

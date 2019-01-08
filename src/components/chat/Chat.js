@@ -6,7 +6,7 @@ import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
 import { withStyles } from '@material-ui/core/styles';
 import OptionsMenu from './OptionsMenu';
-import { enterChannel, addChannelHandler, exitChannel } from '../../api/sendbirdAPI';
+import { addChannelHandler, exitChannel } from '../../api/sb_api';
 
 const styles = {
     root: {
@@ -47,21 +47,17 @@ class Chat extends React.Component {
         this.state = {
             loading: true
         }
-
     }
 
     onUnload = (event) => {
-        event.preventDefault();
-        let channelHandlerId = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
-        exitChannel(this.props.channel, channelHandlerId, this.props.sb); // this might need to be logout
+        event.preventDefault(); 
+        exitChannel(); // this might need to be logout
         // Chrome requires returnValue to be set
-        event.returnValue = ''; 
+        event.returnValue = '';
     }
 
     async componentDidMount() {
-        await enterChannel(this.props.sb, this.props.channelURL);
-        let channelHandlerId = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
-        addChannelHandler(this.props.sb, channelHandlerId, this.props.channel);
+        addChannelHandler();
         this.setState({ loading: false })
         window.addEventListener("beforeunload", this.onUnload);
     }
@@ -73,7 +69,7 @@ class Chat extends React.Component {
     render() {
         const { classes } = this.props;
 
-        if (!this.props.channelURL) {
+        if (!this.props.channel) {
             alert('Select a channel to join.');
             return (
                 <Redirect to="/channels" />
@@ -87,21 +83,23 @@ class Chat extends React.Component {
                 </div>
             )
         }
-        
+
         return (
             <div className={classes.root} >
                 <div className={classes.infoContainer}>
                     <h4>Channel: {this.props.channel.name}</h4>
                     <OptionsMenu
-                        {...this.props} // includes sendAlert for snackbar
+                        // Props includes sendAlert() from <App> for snackbar
+                        {...this.props}
+                        channel={this.props.channel}
                         history={this.props.history}
                     />
                 </div>
                 <div className={classes.displayMessages}>
-                    <DisplayMessages messages={this.props.messages} />
+                    <DisplayMessages messages={this.props.messages} /> {/* connect to store directly? */}
                 </div>
                 <div className={classes.createMessage}>
-                    <CreateMessage channel={this.props.channel} />
+                    <CreateMessage />
                 </div>
             </div>
         )
@@ -110,11 +108,8 @@ class Chat extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        sb: state.sbsession.sbsession,
-        userid: state.userinfo.userid,
-        channel: state.channel.openChannel, //currently only accepts openChannels
+        channel: state.channel.channel,
         messages: state.messages,
-        channelURL: state.channel.channelURL
     }
 }
 

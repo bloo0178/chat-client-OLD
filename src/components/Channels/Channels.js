@@ -28,7 +28,7 @@ class Channels extends React.Component {
                 <CreateChannel history={this.props.history} />
             </div >
         )
-    }
-}
+    };
+};
 
 export default withStyles(styles)(Channels);

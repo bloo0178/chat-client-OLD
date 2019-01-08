@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { logout } from '../api/sendbirdAPI';
+import { logout } from '../api/sb_api';
 
 const styles = {
     root: {
@@ -31,11 +31,6 @@ class Navigation extends React.Component {
             anchorEl: null,
         }
     };
-
-    handleLogout = () => {
-        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
-        logout(channelHandlerID, this.props.channel, this.props.sb); //maybe move the redux state access to sendbirdAPI.js
-    }
 
     handleClick = event => {
         this.setState({
@@ -77,7 +72,7 @@ class Navigation extends React.Component {
                                     Channels
                                 </MenuItem>
                                 <MenuItem
-                                    onClick={this.handleLogout}
+                                    onClick={logout}
                                     component={Link}
                                     to={"/login"}>
                                     Logout
@@ -88,16 +83,13 @@ class Navigation extends React.Component {
                 </AppBar>
             </div>
         )
-    }
-}
+    };
+};
 
 const mapStateToProps = state => {
     return {
-        userid: state.userinfo.userid,
-        sb: state.sbsession.sbsession,
-        channel: state.channel.openChannel,
-        channelURL: state.channel.channelURL
-    }
-}
+        channelURL: state.channel.channel.url,
+    };
+};
 
 export default connect(mapStateToProps)(withStyles(styles)(Navigation));

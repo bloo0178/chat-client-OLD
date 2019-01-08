@@ -1,7 +1,4 @@
 import { combineReducers } from 'redux';
-import * as SendBird from 'sendbird';
-
-//https://redux.js.org/basics/reducers
 
 const userinfoInitState = { userid: '' };
 
@@ -16,40 +13,34 @@ const userinfo = (state = userinfoInitState, action) => {
     }
 };
 
-//const sbsessionInitState = { sbsession: '' }
+const sbsessionInitState = { sbsession: '' }
 
-const sbsession = (state = '', action) => {
+const sbsession = (state = sbsessionInitState, action) => {
     switch (action.type) {
         case 'SET_SBSESS':
             return Object.assign({}, state, {
-                sbsession: new SendBird({ 'appId': action.appid })
+                sbsession: action.sb
             })
-        case 'CLEAR_SBSESS':
-            return '';
         default:
             return state
     }
 };
 
-const channelInitState = { openChannel: '', channelURL: '' }
+const channelInitState = { channelHandlerID: '', channel: '' }
 
 const channel = (state = channelInitState, action) => {
     switch (action.type) {
-        case 'SET_OPEN_CHANNEL':
+        case 'SET_CHANNEL_HANDLER_ID': 
             return Object.assign({}, state, {
-                openChannel: action.openChannel
+                channelHandlerID: action.channelHandlerID
             });
-        case 'CLEAR_OPEN_CHANNEL':
+        case 'SET_CHANNEL': 
             return Object.assign({}, state, {
-                openChannel: ''
+                channel: action.channel
             });
-        case 'SET_CHANNEL_URL':
+        case 'CLEAR_CHANNEL': 
             return Object.assign({}, state, {
-                channelURL: action.channelURL
-            });
-        case 'CLEAR_CHANNEL_URL':
-            return Object.assign({}, state, {
-                channelURL: ''
+                channel: ''
             });
         default:
             return state;
@@ -79,18 +70,28 @@ const messages = (state = [], action) => {
 const participants = (state = [], action) => {
     switch (action.type) {
         case 'UPDATE_PARTICIPANTS':
-            return action.participants
+            return action.participants;
         default:
             return state;
     }
 };
+
+const channels = (state = [], action) => {
+    switch (action.type) {
+        case 'REFRESH_CHANNELS':
+            return action.channels;
+        default:
+            return state;
+    }
+}
 
 const rootReducer = combineReducers({
     userinfo: userinfo,
     sbsession: sbsession,
     channel: channel,
     messages: messages,
-    participants: participants
+    participants: participants,
+    channels: channels
 });
 
 export default rootReducer;

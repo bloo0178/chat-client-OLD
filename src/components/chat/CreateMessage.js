@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addMessage } from '../../actions';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { sendMessage } from '../../api/sb_api';
 
 const styles = {
     root: {
@@ -33,11 +32,7 @@ class CreateMessage extends React.Component {
     };
 
     handleClick = () => {
-        this.props.channel.sendUserMessage(this.state.message, (message, error) => {
-            if (error) return console.log(error);
-            console.log(message.message);
-        })
-        this.props.dispatch(addMessage('You', this.state.message));
+        sendMessage(this.state.message);
         this.setState({ message: '' });
     };
 
@@ -67,4 +62,4 @@ class CreateMessage extends React.Component {
 
 };
 
-export default connect()(withStyles(styles)(CreateMessage));
+export default withStyles(styles)(CreateMessage);

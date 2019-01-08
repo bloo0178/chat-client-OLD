@@ -3,9 +3,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { connect } from 'react-redux';
 import Participants from './Participants';
-import { exitChannel, deleteChannel } from '../../api/sendbirdAPI';
+import { exitChannel, deleteChannel } from '../../api/sb_api';
 
 class OptionsMenu extends React.Component {
     constructor(props) {
@@ -25,18 +24,14 @@ class OptionsMenu extends React.Component {
     };
 
     handleLeave = () => {
-        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
-        exitChannel(this.props.channel, channelHandlerID, this.props.sb);
+        exitChannel();
         this.props.history.push('/channels');
     };
 
     handleDelete = async () => {
-        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
-        await deleteChannel(this.props.sb, channelHandlerID, this.props.channelURL); // don't need a separate object for channelURL. Get it from channel.url.
-        this.props.sendAlert(`Channel deleted.`);
-        // this.props.sendAlert(`Channel ${channel.name} deleted.`); // add back in channel name to alert
-        this.props.history.push("/channels");
-        
+        await deleteChannel();
+        this.props.sendAlert(`Channel ${this.props.channel.name} deleted.`);
+        this.props.history.push("/channels"); 
     }
 
     toggleParticipants = () => {
@@ -80,13 +75,6 @@ class OptionsMenu extends React.Component {
     };
 };
 
-const mapStateToProps = state => {
-    return {
-        channel: state.channel.openChannel,
-        userid: state.userinfo.userid,
-        sb: state.sbsession.sbsession,
-        channelURL: state.channel.channelURL
-    };
-};
 
-export default connect(mapStateToProps)(OptionsMenu);
+
+export default OptionsMenu;
