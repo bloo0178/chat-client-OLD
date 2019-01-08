@@ -26,11 +26,11 @@ class CreateMessage extends React.Component {
         this.state = {
             message: ''
         }
-    }
+    };
 
     handleChange = (event) => {
         this.setState({ message: event.target.value })
-    }
+    };
 
     handleClick = () => {
         this.props.channel.sendUserMessage(this.state.message, (message, error) => {
@@ -39,7 +39,7 @@ class CreateMessage extends React.Component {
         })
         this.props.dispatch(addMessage('You', this.state.message));
         this.setState({ message: '' });
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -63,7 +63,8 @@ class CreateMessage extends React.Component {
                 </Button>
             </div>
         )
-    }
-}
+    };
+
+};
 
 export default connect()(withStyles(styles)(CreateMessage));

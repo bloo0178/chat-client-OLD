@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setUserID } from '../actions';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { clearMessages, clearChannelURL, clearOpenChannel, clearSBSess } from '../actions';
+import { logout } from '../api/sendbirdAPI';
 
 const styles = {
     root: {
@@ -33,33 +32,10 @@ class Navigation extends React.Component {
         }
     };
 
-    logout = async () => {
-        this.props.dispatch(clearMessages());
-        this.props.dispatch(clearChannelURL());
-        this.props.dispatch(clearOpenChannel());
-        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
-        if (this.props.channel) {
-            await (() => {
-                return new Promise(resolve => {
-                    this.props.channel.exit((response, error) => {
-                        if (error) console.log(error);
-                        console.log('Exited channel via logout');
-                        resolve();
-                    })
-                })
-            })();
-        }
-        await (() => {
-            return new Promise(resolve => {
-                this.props.sb.disconnect(() => {
-                    console.log('Disconnected from SendBird via logout.');
-                    resolve();
-                })
-            })
-        })();
-        this.props.dispatch(setUserID(''));
-        //this.props.dispatch(clearSBSess()); !!! DELETE THIS THROUGHOUT APP
-    };
+    handleLogout = () => {
+        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
+        logout(channelHandlerID, this.props.channel, this.props.sb); //maybe move the redux state access to sendbirdAPI.js
+    }
 
     handleClick = event => {
         this.setState({
@@ -81,13 +57,10 @@ class Navigation extends React.Component {
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             react.chat
                         </Typography>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                        <IconButton className={classes.menuButton} color="inherit" >
                             <MenuIcon
-                                aria-owns={anchorEl ? 'simple-menu' : undefined}
-                                aria-haspopup="true"
                                 onClick={this.handleClick} />
                             <Menu
-                                id="simple-menu"
                                 anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
                                 onClose={this.handleClose}>
@@ -104,7 +77,7 @@ class Navigation extends React.Component {
                                     Channels
                                 </MenuItem>
                                 <MenuItem
-                                    onClick={this.logout}
+                                    onClick={this.handleLogout}
                                     component={Link}
                                     to={"/login"}>
                                     Logout

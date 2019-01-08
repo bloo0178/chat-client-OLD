@@ -4,8 +4,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { connect } from 'react-redux';
-import { clearMessages, clearChannelURL, clearOpenChannel } from '../../actions';
 import Participants from './Participants';
+import { exitChannel, deleteChannel } from '../../api/sendbirdAPI';
 
 class OptionsMenu extends React.Component {
     constructor(props) {
@@ -25,36 +25,19 @@ class OptionsMenu extends React.Component {
     };
 
     handleLeave = () => {
-        this.props.dispatch(clearMessages());
-        this.props.dispatch(clearChannelURL());
-        this.props.dispatch(clearOpenChannel());
-        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
-        this.props.channel.exit((response, error) => {
-            if (error) return alert(error);
-        });
+        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
+        exitChannel(this.props.channel, channelHandlerID, this.props.sb);
         this.props.history.push('/channels');
     };
 
-    handleDelete = () => {
-        this.props.dispatch(clearMessages());
-        this.props.dispatch(clearOpenChannel()); // Not sure this is needed. May refactor without.
-        this.props.sb.removeChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`);
-        this.props.sb.OpenChannel.getChannel(this.props.channelURL, (channel, error) => {
-            if (error) {
-                return console.log(error);
-            };
-            channel.delete((response, error) => {
-                if (error) {
-                    console.log(error);
-                    return alert('You are not an admin of the channel you are trying to delete.');
-                }
-                console.log(channel);
-                this.props.history.push("/channels");
-                this.props.sendAlert(`Channel ${channel.name} deleted.`); 
-                this.props.dispatch(clearChannelURL());
-            });
-        });
-    };
+    handleDelete = async () => {
+        let channelHandlerID = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
+        await deleteChannel(this.props.sb, channelHandlerID, this.props.channelURL); // don't need a separate object for channelURL. Get it from channel.url.
+        this.props.sendAlert(`Channel deleted.`);
+        // this.props.sendAlert(`Channel ${channel.name} deleted.`); // add back in channel name to alert
+        this.props.history.push("/channels");
+        
+    }
 
     toggleParticipants = () => {
         this.setState({
@@ -89,7 +72,9 @@ class OptionsMenu extends React.Component {
                         Delete Channel
                     </MenuItem>
                 </Menu>
-                <Participants channel={this.props.channel} open={this.state.toggleParticipants} toggle={this.toggleParticipants}/>
+                <Participants
+                    open={this.state.toggleParticipants}
+                    toggle={this.toggleParticipants} />
             </div>
         );
     };

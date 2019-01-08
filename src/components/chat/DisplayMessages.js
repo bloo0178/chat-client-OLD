@@ -42,8 +42,6 @@ const styles = {
     }
 };
 
-// need to pass in info if this is YOU or another user.
-//const DisplayMessages = (props) => {
 class DisplayMessages extends React.Component {
     constructor(props) {
         super(props);

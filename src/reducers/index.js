@@ -16,20 +16,22 @@ const userinfo = (state = userinfoInitState, action) => {
     }
 };
 
+//const sbsessionInitState = { sbsession: '' }
+
 const sbsession = (state = '', action) => {
     switch (action.type) {
         case 'SET_SBSESS':
             return Object.assign({}, state, {
                 sbsession: new SendBird({ 'appId': action.appid })
             })
-        case 'CLEAR_SBSESS': 
+        case 'CLEAR_SBSESS':
             return '';
         default:
             return state
     }
 };
 
-const channelInitState = {openChannel: '', channelURL: ''}
+const channelInitState = { openChannel: '', channelURL: '' }
 
 const channel = (state = channelInitState, action) => {
     switch (action.type) {
@@ -41,7 +43,7 @@ const channel = (state = channelInitState, action) => {
             return Object.assign({}, state, {
                 openChannel: ''
             });
-        case 'SET_CHANNEL_URL': 
+        case 'SET_CHANNEL_URL':
             return Object.assign({}, state, {
                 channelURL: action.channelURL
             });
@@ -55,7 +57,7 @@ const channel = (state = channelInitState, action) => {
 };
 
 // Messages are kept in Redux store to allow them to persist and
-// re-load despite the user potentially navigating to different screens
+// reload despite the user potentially navigating to different screens
 // and unmounting the Chat component.
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -67,8 +69,17 @@ const messages = (state = [], action) => {
                     message: action.message
                 }
             ]
-        case 'CLEAR_MESSAGES': 
+        case 'CLEAR_MESSAGES':
             return [];
+        default:
+            return state;
+    }
+};
+
+const participants = (state = [], action) => {
+    switch (action.type) {
+        case 'UPDATE_PARTICIPANTS':
+            return action.participants
         default:
             return state;
     }
@@ -78,7 +89,8 @@ const rootReducer = combineReducers({
     userinfo: userinfo,
     sbsession: sbsession,
     channel: channel,
-    messages: messages
+    messages: messages,
+    participants: participants
 });
 
 export default rootReducer;

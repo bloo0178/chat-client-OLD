@@ -22,8 +22,8 @@ class App extends Component {
       loading: 'true',
       openAlert: false,
       alertMessage: ''
-    }
-  }
+    };
+  };
 
   // Recieve alert message from child components. Transition in snackbar.
   // Currently only used for delete channel functionality within Chat > OptionsMenu.

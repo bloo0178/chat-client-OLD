@@ -39,3 +39,8 @@ export const addMessage = (sender,message) => ({
 export const clearMessages = () => ({
     type: 'CLEAR_MESSAGES'
 })
+
+export const updateParticipants = participants => ({
+    type: 'UPDATE_PARTICIPANTS',
+    participants
+})

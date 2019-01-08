@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setOpenChannel, addMessage } from '../../actions';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
 import { withStyles } from '@material-ui/core/styles';
 import OptionsMenu from './OptionsMenu';
+import { enterChannel, addChannelHandler, exitChannel } from '../../api/sendbirdAPI';
 
 const styles = {
     root: {
@@ -45,73 +45,41 @@ class Chat extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            participantsKey: false,
             loading: true
         }
+
     }
 
-    // ----------------- MAY BE ABLE TO DELETE THIS ------------------------- //
-    // Triggers a change of the key value associated to the Participants component
-    // when the channel handler detects a participant joined or left. 
-    updateParticipantList = () => {
-        this.setState({
-            updateParticipantsList: !this.state.updateParticipantsList
-        })
+    onUnload = (event) => {
+        event.preventDefault();
+        let channelHandlerId = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
+        exitChannel(this.props.channel, channelHandlerId, this.props.sb); // this might need to be logout
+        // Chrome requires returnValue to be set
+        event.returnValue = ''; 
     }
 
     async componentDidMount() {
-        // IIFE obtains the channel info from SendBird to be used for all chat functionality. 
-        await (() => {
-            return new Promise(resolve => {
-                this.props.sb.OpenChannel.getChannel(this.props.channelURL, (channel, error) => {
-                    if (error) return console.log(error);
-                    channel.enter((response, error) => {
-                        if (error) return console.log(error);
-                        // Possibly refactor. Channel might not need to be in Redux store.
-                        this.props.dispatch(setOpenChannel(channel));
-                        resolve(this.props.channel);
-                    })
-                })
-            })
-        })();
-
-        // ------ EVENT HANDLERS ------
-        // https://docs.sendbird.com/javascript/event_handler#3_channel_handler 
-        var ChannelHandler = new this.props.sb.ChannelHandler();
-        this.props.sb.addChannelHandler(`${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`, ChannelHandler);
-
-        ChannelHandler.onUserEntered = (openChannel, user) => {
-            this.updateParticipantList();
-            this.props.dispatch(addMessage('info', `${user.userId} has joined.`))
-        };
-
-        ChannelHandler.onUserExited = (openChannel, user) => {
-            this.updateParticipantList();
-            this.props.dispatch(addMessage('info', `${user.userId} has left.`))
-        };
-
-        ChannelHandler.onMessageReceived = (channel, message) => {
-            this.props.dispatch(addMessage(message._sender.userId, message.message));
-        };
-
+        await enterChannel(this.props.sb, this.props.channelURL);
+        let channelHandlerId = `${this.props.userid}${this.props.channel.url}${this.props.sb._connectedAt}`;
+        addChannelHandler(this.props.sb, channelHandlerId, this.props.channel);
         this.setState({ loading: false })
-
-        window.addEventListener("beforeunload", (event) => {
-            event.preventDefault();
-            this.props.channel.exit((response, error) => {
-                if (error) return alert(error);
-            })
-        })
+        window.addEventListener("beforeunload", this.onUnload);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("beforeunload", this.onUnload);
+    };
 
     render() {
         const { classes } = this.props;
+
         if (!this.props.channelURL) {
             alert('Select a channel to join.');
             return (
                 <Redirect to="/channels" />
             )
         }
+
         if (this.state.loading === true) {
             return (
                 <div className={classes.loadingSpinner}>
@@ -119,6 +87,7 @@ class Chat extends React.Component {
                 </div>
             )
         }
+        
         return (
             <div className={classes.root} >
                 <div className={classes.infoContainer}>
@@ -126,7 +95,7 @@ class Chat extends React.Component {
                     <OptionsMenu
                         {...this.props} // includes sendAlert for snackbar
                         history={this.props.history}
-                        key={this.state.updateParticipantsList} />
+                    />
                 </div>
                 <div className={classes.displayMessages}>
                     <DisplayMessages messages={this.props.messages} />
