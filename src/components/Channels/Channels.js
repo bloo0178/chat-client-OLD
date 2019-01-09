@@ -11,7 +11,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
-}
+};
 
 // Consider making this stateless functional component. 
 // Only if not adding a loading state w/ spinner. 

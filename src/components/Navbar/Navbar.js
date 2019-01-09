@@ -9,7 +9,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { logout } from '../api/sb_api';
+import { logout } from '../../api/sb_api';
+import AlertDialog from './AlertDialog';
 
 const styles = {
     root: {
@@ -19,8 +20,6 @@ const styles = {
         flexGrow: 1,
     },
     menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
     },
 };
 
@@ -29,6 +28,7 @@ class Navigation extends React.Component {
         super(props)
         this.state = {
             anchorEl: null,
+            showAlert: false,
         }
     };
 
@@ -40,6 +40,22 @@ class Navigation extends React.Component {
 
     handleClose = () => {
         this.setState({ anchorEl: null });
+    };
+
+    toggleAlert = () => {
+        this.setState({
+            showAlert: !this.state.showAlert,
+        });
+    };
+
+    handleChatRedirect = () => {
+        if (!this.props.channelURL) {
+            this.handleClose();
+            this.toggleAlert();
+        } else {
+            this.handleClose();
+            this.props.history.push(`/chat/${this.props.channelURL}`);
+        };
     };
 
     render() {
@@ -60,11 +76,9 @@ class Navigation extends React.Component {
                                 open={Boolean(anchorEl)}
                                 onClose={this.handleClose}>
                                 <MenuItem
-                                    onClick={this.handleClose}
-                                    component={Link}
-                                    to={`/chat/${this.props.channelURL}`}>
+                                    onClick={this.handleChatRedirect}>
                                     Chat
-                                </MenuItem>
+                                    </ MenuItem>
                                 <MenuItem
                                     onClick={this.handleClose}
                                     component={Link}
@@ -81,6 +95,10 @@ class Navigation extends React.Component {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
+                <AlertDialog
+                    showAlert={this.state.showAlert}
+                    toggleAlert={this.toggleAlert}
+                />
             </div>
         )
     };

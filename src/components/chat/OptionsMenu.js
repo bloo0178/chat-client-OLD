@@ -29,10 +29,11 @@ class OptionsMenu extends React.Component {
     };
 
     handleDelete = async () => {
+        let channelName = this.props.channel.name;
         await deleteChannel();
-        this.props.sendAlert(`Channel ${this.props.channel.name} deleted.`);
+        this.props.sendAlert(`Channel ${channelName} deleted.`);
         this.props.history.push("/channels"); 
-    }
+    };
 
     toggleParticipants = () => {
         this.setState({
@@ -52,7 +53,6 @@ class OptionsMenu extends React.Component {
                     <MoreVertIcon />
                 </IconButton>
                 <Menu
-                    id="long-menu"
                     anchorEl={anchorEl}
                     open={open}
                     onClose={this.handleClose}
@@ -74,7 +74,5 @@ class OptionsMenu extends React.Component {
         );
     };
 };
-
-
 
 export default OptionsMenu;

@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import Login from './components/Login';
 import Channels from './components/Channels/Channels';
 import Chat from './components/Chat/Chat';
-import Navigation from './components/Navbar';
+import Navigation from './components/Navbar/Navbar';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-
 import Snackbar from './components/Snackbar';
 
 const styles = {
@@ -38,7 +37,7 @@ class App extends Component {
   // app, due to alerts being accompanied by instant redirects.
   closeAlert = () => {
     this.setState({
-      openAlert: false, 
+      openAlert: false,
       alertMessage: '',
     });
   };
@@ -69,7 +68,7 @@ class App extends Component {
             <Route path='/chat'
               render={(props) =>
                 <Chat {...props} key={this.props.channelURL}
-                  sendAlert={this.handleAlert} />} 
+                  sendAlert={this.handleAlert} />}
             />
             <Route exact path="/channels" component={Channels} />
           </div>

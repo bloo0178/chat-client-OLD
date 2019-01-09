@@ -69,13 +69,6 @@ class Chat extends React.Component {
     render() {
         const { classes } = this.props;
 
-        if (!this.props.channel) {
-            alert('Select a channel to join.');
-            return (
-                <Redirect to="/channels" />
-            )
-        }
-
         if (this.state.loading === true) {
             return (
                 <div className={classes.loadingSpinner}>
@@ -103,15 +96,15 @@ class Chat extends React.Component {
                 </div>
             </div>
         )
-    }
-}
+    };
+};
 
 const mapStateToProps = state => {
     return {
         channel: state.channel.channel,
         messages: state.messages,
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps)(withStyles(styles)(Chat));
 
