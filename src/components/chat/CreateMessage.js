@@ -1,22 +1,21 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { sendMessage } from '../../api/sb_api';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SendIcon from '@material-ui/icons/SendRounded';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = {
     root: {
         display: 'flex',
-        flexFlow: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        margin: 'auto',
     },
     textField: {
-        width: '60%'
+        width: '60%',
     },
-    button: {
-        margin: '5px'
-    }
 };
 
 class CreateMessage extends React.Component {
@@ -38,6 +37,8 @@ class CreateMessage extends React.Component {
 
     render() {
         const { classes } = this.props;
+        let color;
+        !this.state.message ? color = 'default' : color = 'primary';
 
         return (
             <div className={classes.root}>
@@ -49,13 +50,19 @@ class CreateMessage extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    variant="contained"
+                                    onClick={this.handleClick}
+                                    color={color}>
+                                    <SendIcon />
+                                </ IconButton>
+                            </ InputAdornment>
+                        )
+                    }}
                 />
-                <Button className={classes.button}
-                    variant="contained"
-                    onClick={this.handleClick}
-                    color="primary">
-                    Send
-                </Button>
             </div>
         )
     };

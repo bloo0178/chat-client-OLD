@@ -17,18 +17,18 @@ class Login extends React.Component {
         this.state = {
             username: '',
             loading: false
-        }
-    }
+        };
+    };
 
     handleChange = (event) => {
         this.setState({ username: event.target.value })
-    }
+    };
 
     // ------------------------ BEGIN TEMP CODE --------------------------- // 
-    async componentDidMount() {
+    /*async componentDidMount() {
         await login('test');
         this.props.history.push('/channels');
-    };
+    };*/
     // ------------------------ END TEMP CODE ----------------------------- // 
 
     handleClick = async () => {
@@ -40,6 +40,7 @@ class Login extends React.Component {
     render() {
         const { classes } = this.props;
         return (
+            <div>
             <Grid
                 container
                 className={classes.root}
@@ -47,6 +48,7 @@ class Login extends React.Component {
                 justify="center"
                 alignItems="center"
             >
+            <h1>react.chat</h1>
                 <TextField
                     placeholder="Enter a username"
                     margin="normal"
@@ -62,6 +64,7 @@ class Login extends React.Component {
                     Submit
                 </Button>
             </Grid>
+            </div>
         )
     };
 };

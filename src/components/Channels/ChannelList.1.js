@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { refreshChannels } from '../../actions/actions'
 import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-
+import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -56,12 +55,11 @@ class ChannelList extends React.Component {
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <List 
-                    className={classes.list}
-                    subheader={<ListSubheader color="primary">
-                        Channels
-                        </ListSubheader>}
-                    >
+                <div className={classes.heading} >
+                    <h4 >Channels</h4>
+                    </div>
+                    <Divider />
+                    <List className={classes.list}>
                         {this.props.channels.map((channel, index) => {
                             return (
                                 <div key={channel.name + index.toString()}>

@@ -5,8 +5,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
 import { withStyles } from '@material-ui/core/styles';
-import OptionsMenu from './OptionsMenu';
+import OptionsMenu from './InfoBar/OptionsMenu';
 import { addChannelHandler, exitChannel } from '../../api/sb_api';
+import InfoBar from './InfoBar/InfoBar';
 
 const styles = {
     root: {
@@ -80,13 +81,11 @@ class Chat extends React.Component {
         return (
             <div className={classes.root} >
                 <div className={classes.infoContainer}>
-                    <h4>Channel: {this.props.channel.name}</h4>
-                    <OptionsMenu
-                        // Props includes sendAlert() from <App> for snackbar
-                        {...this.props}
-                        channel={this.props.channel}
-                        history={this.props.history}
+                    <InfoBar 
+                    channel={this.props.channel} 
+                    history={this.props.history}
                     />
+                    
                 </div>
                 <div className={classes.displayMessages}>
                     <DisplayMessages messages={this.props.messages} /> {/* connect to store directly? */}

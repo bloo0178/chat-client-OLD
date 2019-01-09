@@ -46,7 +46,7 @@ class CreateChannel extends React.Component {
 
     handleCreate = async () => {
         if (!this.state.name) {
-            return alert('Enter a channel name.');
+            return;
         };
         let newChannelURL = await createChannel(this.state.name); 
         await enterChannel(newChannelURL);
@@ -57,22 +57,15 @@ class CreateChannel extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-                <Fab color="primary"
-                    onClick={this.handleClick}
-                    className={classes.fab}>
+                <Fab color="primary" onClick={this.handleClick} className={classes.fab}>
                     <AddIcon />
                 </Fab>
-
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                >
+                <Dialog open={this.state.open} onClose={this.handleClose}>
                     <DialogTitle id="form-dialog-title">Create Channel</DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="name"
                             label="Channel Name"
                             fullWidth
                             onChange={this.handleChange}

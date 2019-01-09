@@ -1,113 +1,37 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import { logout } from '../../api/sb_api';
-import AlertDialog from './AlertDialog';
+import NavMenu from './NavMenu';
 
 const styles = {
     root: {
-        flexGrow: 1,
+        display: 'flex',
     },
-    grow: {
-        flexGrow: 1,
-    },
-    menuButton: {
+    menuIcon: {
+        marginLeft: 'auto',
     },
 };
 
-class Navigation extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            anchorEl: null,
-            showAlert: false,
-        }
-    };
+const Navbar = (props) => {
 
-    handleClick = event => {
-        this.setState({
-            anchorEl: event.currentTarget
-        });
-    };
+    const { classes } = props;
 
-    handleClose = () => {
-        this.setState({ anchorEl: null });
-    };
-
-    toggleAlert = () => {
-        this.setState({
-            showAlert: !this.state.showAlert,
-        });
-    };
-
-    handleChatRedirect = () => {
-        if (!this.props.channelURL) {
-            this.handleClose();
-            this.toggleAlert();
-        } else {
-            this.handleClose();
-            this.props.history.push(`/chat/${this.props.channelURL}`);
-        };
-    };
-
-    render() {
-        const { classes } = this.props;
-        const { anchorEl } = this.state;
-        return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            react.chat
+    return (
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        react.chat
                         </Typography>
-                        <IconButton className={classes.menuButton} color="inherit" >
-                            <MenuIcon
-                                onClick={this.handleClick} />
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={this.handleClose}>
-                                <MenuItem
-                                    onClick={this.handleChatRedirect}>
-                                    Chat
-                                    </ MenuItem>
-                                <MenuItem
-                                    onClick={this.handleClose}
-                                    component={Link}
-                                    to={"/channels"}>
-                                    Channels
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={logout}
-                                    component={Link}
-                                    to={"/login"}>
-                                    Logout
-                                </MenuItem>
-                            </Menu>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <AlertDialog
-                    showAlert={this.state.showAlert}
-                    toggleAlert={this.toggleAlert}
-                />
-            </div>
-        )
-    };
+                    <div className={classes.menuIcon} >
+                        <NavMenu history={props.history} />
+                    </div>
+                </Toolbar>
+            </AppBar>
+        </div>
+    )
 };
 
-const mapStateToProps = state => {
-    return {
-        channelURL: state.channel.channel.url,
-    };
-};
-
-export default connect(mapStateToProps)(withStyles(styles)(Navigation));
+export default withStyles(styles)(Navbar);

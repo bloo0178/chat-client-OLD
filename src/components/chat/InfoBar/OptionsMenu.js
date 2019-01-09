@@ -3,8 +3,16 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Participants from './Participants';
-import { exitChannel, deleteChannel } from '../../api/sb_api';
+import Participants from '../Participants';
+import { exitChannel, deleteChannel, isOperator } from '../../../api/sb_api';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+
+const styles = ({
+    deleteButton: {
+        color: 'red',
+    }, 
+  });
 
 class OptionsMenu extends React.Component {
     constructor(props) {
@@ -12,7 +20,14 @@ class OptionsMenu extends React.Component {
         this.state = {
             anchorEl: null,
             toggleParticipants: false,
+            disableDelete: true,
         };
+    };
+
+    componentDidMount() {
+        this.setState({
+            disableDelete: !isOperator(),
+        })
     };
 
     handleClick = event => {
@@ -29,10 +44,8 @@ class OptionsMenu extends React.Component {
     };
 
     handleDelete = async () => {
-        let channelName = this.props.channel.name;
-        await deleteChannel();
-        this.props.sendAlert(`Channel ${channelName} deleted.`);
-        this.props.history.push("/channels"); 
+        await deleteChannel(); 
+        this.props.history.push("/channels");
     };
 
     toggleParticipants = () => {
@@ -43,8 +56,10 @@ class OptionsMenu extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
+
         return (
             <div>
                 <IconButton
@@ -63,7 +78,10 @@ class OptionsMenu extends React.Component {
                     <MenuItem onClick={this.handleLeave}>
                         Leave Channel
                     </MenuItem>
-                    <MenuItem onClick={this.handleDelete}>
+                    <MenuItem 
+                    disabled={this.state.disableDelete}
+                    onClick={this.handleDelete}
+                    className={classes.deleteButton}>
                         Delete Channel
                     </MenuItem>
                 </Menu>
@@ -75,4 +93,11 @@ class OptionsMenu extends React.Component {
     };
 };
 
-export default OptionsMenu;
+const mapStateToProps = state => {
+    return {
+        channel: state.channel.channel,
+        messages: state.messages,
+    };
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(OptionsMenu));

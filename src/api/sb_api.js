@@ -1,15 +1,12 @@
 import {
-    clearMessages, 
-    setUserID, setSBSess,
-    updateParticipants, addMessage,
-    setChannel, clearChannel, setChannelHandlerID
+    clearMessages, setUserID, setSBSess,
+    updateParticipants, addMessage, setChannel, 
+    clearChannel, setChannelHandlerID,
 } from '../actions/actions';
 import { store } from '../index';
 import * as SendBird from 'sendbird';
 
-
 var sb = new SendBird({ 'appId': process.env.REACT_APP_SB_APP_ID });
-
 
 export const login = (username) => {
     store.dispatch(setSBSess(sb));
@@ -22,9 +19,9 @@ export const login = (username) => {
     });
 };
 
+
 export const logout = async () => {
     let channel = store.getState().channel.channel;
-
     const disconnectSession = () => {
         return new Promise(resolve => {
             sb.disconnect(() => {
@@ -32,19 +29,19 @@ export const logout = async () => {
             });
         });
     };
-
     if (channel) { await exitChannel(); };
     await disconnectSession();
     store.dispatch(setUserID(''));
 };
 
 
-export const enterChannel = (channelURL) => { 
-    return new Promise(resolve => {
+export const enterChannel = (channelURL) => {
+    let oldChannel = store.getState().channel.channel;
+    return new Promise(async resolve => {
+        if (oldChannel) await exitChannel();
         sb.OpenChannel.getChannel(channelURL, (channel, error) => {
             if (error) return console.log(error);
             channel.enter((response, error) => {
-                console.log(channel);
                 if (error) return console.log(error);
                 store.dispatch(clearMessages());
                 store.dispatch(setChannel(channel));
@@ -87,17 +84,18 @@ export const deleteChannel = () => {
     let channelHandlerID = store.getState().channel.channelHandlerID;
     let channelURL = store.getState().channel.channel.url;
     return new Promise(resolve => {
-        store.dispatch(clearMessages());
-        sb.removeChannelHandler(channelHandlerID);
         sb.OpenChannel.getChannel(channelURL, (channel, error) => {
             if (error) return console.log(error);
             channel.delete((response, error) => {
                 if (error) {
                     console.log(error);
-                    return alert('You are not an admin of the channel you are trying to delete.');
+                    resolve('error');
+                } else {
+                    store.dispatch(clearChannel());
+                    store.dispatch(clearMessages());
+                    sb.removeChannelHandler(channelHandlerID);
+                    resolve();
                 }
-                store.dispatch(clearChannel());
-                resolve();
             });
         });
     });
@@ -167,5 +165,12 @@ export const sendMessage = (message) => {
         if (error) return console.log(error);
     });
     store.dispatch(addMessage('You', message));
+};
+
+
+export const isOperator = () => {
+    let channel = store.getState().channel.channel;
+    let result = channel.isOperatorWithUserId(sb.getCurrentUserId());
+    return result;
 };
 
