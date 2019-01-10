@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
 import { withStyles } from '@material-ui/core/styles';
-import OptionsMenu from './InfoBar/OptionsMenu';
 import { addChannelHandler, exitChannel } from '../../api/sb_api';
 import InfoBar from './InfoBar/InfoBar';
 
@@ -76,7 +74,7 @@ class Chat extends React.Component {
                     <CircularProgress />
                 </div>
             )
-        }
+        };
 
         return (
             <div className={classes.root} >

@@ -35,9 +35,6 @@ const styles = {
 }
 
 class ChannelList extends React.Component {
-    constructor(props) {
-        super(props)
-    }
 
     async componentDidMount() { 
         let channelList = await getChannelList();

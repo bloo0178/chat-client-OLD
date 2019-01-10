@@ -11,9 +11,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 const store = createStore(rootReducer, {});
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <React.Fragment>
+        <CssBaseline />
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.Fragment>,
     document.getElementById('root')
 );
 
@@ -22,4 +25,4 @@ ReactDOM.render(
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-export {store};
+export { store };

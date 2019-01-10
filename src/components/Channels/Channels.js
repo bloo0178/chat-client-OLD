@@ -13,22 +13,14 @@ const styles = {
     },
 };
 
-// Consider making this stateless functional component. 
-// Only if not adding a loading state w/ spinner. 
-class Channels extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        const { classes } = this.props;
+const Channels = (props) => {
+        const { classes } = props;
         return (
             <div className={classes.root}>
-                <ChannelList history={this.props.history} />
-                <CreateChannel history={this.props.history} />
+                <ChannelList history={props.history} />
+                <CreateChannel history={props.history} />
             </div >
         )
-    };
 };
 
 export default withStyles(styles)(Channels);
