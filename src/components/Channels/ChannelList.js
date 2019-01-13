@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { refreshChannels } from '../../actions/actions'
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';

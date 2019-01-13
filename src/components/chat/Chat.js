@@ -5,7 +5,8 @@ import CreateMessage from './CreateMessage';
 import DisplayMessages from './DisplayMessages';
 import { withStyles } from '@material-ui/core/styles';
 import { addChannelHandler, exitChannel } from '../../api/sb_api';
-import InfoBar from './InfoBar/InfoBar';
+import InfoBar from './InfoBar';
+import OptionsMenu from './OptionsMenu';
 
 const styles = {
     root: {
@@ -49,7 +50,7 @@ class Chat extends React.Component {
     }
 
     onUnload = (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         exitChannel(); // this might need to be logout
         // Chrome requires returnValue to be set
         event.returnValue = '';
@@ -79,11 +80,12 @@ class Chat extends React.Component {
         return (
             <div className={classes.root} >
                 <div className={classes.infoContainer}>
-                    <InfoBar 
-                    channel={this.props.channel} 
-                    history={this.props.history}
-                    />
-                    
+                    <InfoBar
+                        title={this.props.channel.name}
+                        history={this.props.history}
+                    >
+                        <OptionsMenu history={this.props.history} />
+                    </InfoBar>
                 </div>
                 <div className={classes.displayMessages}>
                     <DisplayMessages messages={this.props.messages} /> {/* connect to store directly? */}
