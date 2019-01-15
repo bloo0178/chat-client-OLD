@@ -47,7 +47,7 @@ class NavMenu extends React.Component {
   render() {
     const { anchorEl, showAlert } = this.state;
     return (
-      <div>
+      <React.Fragment>
         <IconButton color="inherit">
           <MenuIcon onClick={this.handleOpen} />
           <Menu
@@ -69,7 +69,7 @@ class NavMenu extends React.Component {
           </Menu>
         </IconButton>
         <AlertDialog showAlert={showAlert} toggleAlert={this.toggleAlert} />
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -46,7 +46,7 @@ class CreateChannel extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <React.Fragment>
         <Fab color="primary" onClick={this.handleClick} className={classes.fab}>
           <AddIcon />
         </Fab>
@@ -70,7 +70,7 @@ class CreateChannel extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </React.Fragment>
     )
   }
 }

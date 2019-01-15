@@ -1,9 +1,4 @@
 export const styles = {
-  root: {},
-  messageList: {
-    listStyle: "none",
-    padding: 0 // gets rid of the indent
-  },
   bubbleWrapper: {
     width: "100%",
     display: "inline-flex", // sizes bubble to the text

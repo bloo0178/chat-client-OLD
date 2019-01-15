@@ -58,7 +58,7 @@ class OptionsMenu extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      <div>
+      <React.Fragment>
         <IconButton onClick={this.handleClick}>
           <MoreVertIcon />
         </IconButton>
@@ -79,7 +79,7 @@ class OptionsMenu extends React.Component {
           open={toggleParticipants}
           toggle={this.toggleParticipants}
         />
-      </div>
+      </React.Fragment>
     )
   }
 }

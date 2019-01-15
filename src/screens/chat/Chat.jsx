@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CreateMessage from "../../components/CreateMessage/CreateMessage";
-import DisplayMessages from "../../components/DisplayMessages/DisplayMessages";
+import MessagesDisplay from "../../components/MessagesDisplay/MessagesDisplay";
 import { withStyles } from "@material-ui/core/styles";
 import { addChannelHandler, exitChannel } from "../../api/sendBirdAPI";
 import InfoBar from "../../components/InfoBar/InfoBar";
@@ -64,7 +64,7 @@ class Chat extends React.Component {
           </InfoBar>
         </div>
         <div className={displayMessages}>
-          <DisplayMessages messages={messages} />
+          <MessagesDisplay messages={messages} />
         </div>
         <div className={createMessage}>
           <CreateMessage />

@@ -7,7 +7,7 @@ import {
   setChannel,
   clearChannel,
   setChannelHandlerID
-} from "../redux/actions/actions" //"../actions/actions";
+} from "../redux/actions/actions";
 import { store } from "../index";
 import * as SendBird from "sendbird";
 

@@ -6,14 +6,14 @@ const InfoBar = props => {
   const { title, children } = props;
 
   return (
-    <div>
+    <React.Fragment>
       <Toolbar>
         <Typography variant="h6" color="inherit">
           {title}
         </Typography>
         {children}
       </Toolbar>
-    </div>
+    </React.Fragment>
   )
 }
 
