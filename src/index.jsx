@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import rootReducer from './redux/reducers/reducers';
+import rootReducer from './modules/reducers/rootReducer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const store = createStore(rootReducer, {});

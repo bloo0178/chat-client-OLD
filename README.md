@@ -9,4 +9,7 @@ Chat client built as a learning project. Current state allows users to access fu
 - React Router
 - Redux/ React Redux
 
+## Misc Notes 
+- File structure roughly based around the Fractal pattern (https://hackernoon.com/fractal-a-react-app-structure-for-infinite-scale-4dab943092af)
+
 

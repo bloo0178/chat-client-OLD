@@ -1,15 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import Login from "./screens/login/Login";
-import Channels from "./screens/channels/Channels";
-import Chat from "./screens/chat/Chat";
-import Navbar from "./components/shared/Navbar/Navbar";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = {
-  root: {}
-};
+import Login from "./screens/Login";
+import Channels from "./screens/Channels";
+import Chat from "./screens/Chat";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import ProtectedRoute from './components/ProtectedRoute';
 
 class App extends Component {
   constructor(props) {
@@ -20,33 +15,18 @@ class App extends Component {
   }
 
   render() {
-    const {
-      classes: { root },
-      userid
-    } = this.props;
-
-    if (!userid) {
-      return (
-        <Router>
-          <Fragment>
-            <Redirect to="/login" /> {/* do this differently */}
-            <Route path="/login" component={Login} />
-          </Fragment>
-        </Router>
-      );
-    }
+    const { userid } = this.props;
 
     return (
       <Router>
-        <Fragment>
-          <Route component={Navbar} />
-          <div className={root}>
-            <Route path="/chat" component={Chat} />
-            <Route exact path="/channels" component={Channels} />
-          </div>
-        </Fragment>
+        <React.Fragment>
+        <Route path="/login" component={Login} />
+        <ProtectedRoute path="/chat" component={Chat} userid={userid} />
+        <ProtectedRoute path="/channels" component={Channels} userid={userid} />
+        </React.Fragment>
       </Router>
-    );
+    )
+
   }
 }
 
@@ -56,4 +36,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(withStyles(styles)(App));
+export default connect(mapStateToProps)(App);
