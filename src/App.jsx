@@ -4,7 +4,8 @@ import Login from "./screens/Login";
 import Channels from "./screens/Channels";
 import Chat from "./screens/Chat";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from "./components/ProtectedRoute";
+import { SharedSnackbarProvider } from "./components/SharedSnackbar.context";
 
 class App extends Component {
   constructor(props) {
@@ -20,13 +21,18 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
-        <Route path="/login" component={Login} />
-        <ProtectedRoute path="/chat" component={Chat} userid={userid} />
-        <ProtectedRoute path="/channels" component={Channels} userid={userid} />
+          <Route path="/login" component={Login} />
+          <SharedSnackbarProvider>
+            <ProtectedRoute path="/chat" component={Chat} userid={userid} />
+          </SharedSnackbarProvider>
+          <ProtectedRoute
+            path="/channels"
+            component={Channels}
+            userid={userid}
+          />
         </React.Fragment>
       </Router>
-    )
-
+    );
   }
 }
 

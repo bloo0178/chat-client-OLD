@@ -9,8 +9,7 @@ import { exitChannel } from './channelHelpers';
 const sb = new SendBird({ appId: process.env.REACT_APP_SB_APP_ID });
 
 export const login = username => {
-  console.log(sb);
-  store.dispatch(setSBSess(sb._connectedAt));
+  store.dispatch(setSBSess(sb));
   return new Promise(resolve => {
     sb.connect(
       username,

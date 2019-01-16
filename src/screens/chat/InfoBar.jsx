@@ -14,7 +14,7 @@ const InfoBar = props => {
         {children}
       </Toolbar>
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default InfoBar;
