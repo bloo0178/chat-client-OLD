@@ -10,7 +10,6 @@ import InfoBar from "./chat/InfoBar";
 import OptionsMenu from "./chat/infoBar/OptionsMenu";
 import { styles } from "./chat/styles";
 import Navbar from "../components/Navbar";
-import { WithSnackbarContext } from '../components/withSnackbarContext';
 
 class Chat extends React.Component {
   constructor(props) {

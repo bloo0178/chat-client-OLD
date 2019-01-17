@@ -40,7 +40,7 @@ export class SharedSnackbarProvider extends Component {
         }}
       >
         <SharedSnackbar />
-        {children}
+        {children} {/* why is this needed? */}
       </SharedSnackbarContext.Provider>
     );
   }

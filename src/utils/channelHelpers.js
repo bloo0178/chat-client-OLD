@@ -10,7 +10,6 @@ import * as SendBird from "sendbird";
 const sb = new SendBird({ appId: process.env.REACT_APP_SB_APP_ID });
 
 export const enterChannel = channelURL => {
-  console.log(sb);
   const oldChannel = store.getState().channel.channel;
   return new Promise(async resolve => {
     if (oldChannel) await exitChannel();
